@@ -1,0 +1,147 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package academia;
+/**
+ *
+ * @author Turato
+ */
+public class Treinos {
+    private String exercicios;
+    private int series;
+    private int repeticao;
+    int codigo_aluno;
+    private final int codigo;
+    private String data_inicio;
+    private String data_fim;
+
+    /**
+     * Get the value of data_fim
+     *
+     * @return the value of data_fim
+     */
+    public String getData_fim() {
+        return data_fim;
+    }
+
+    /**
+     * Set the value of data_fim
+     *
+     * @param data_fim new value of data_fim
+     */
+    public void setData_fim(String data_fim) {
+        this.data_fim = data_fim;
+    }
+
+
+    /**
+     * Get the value of data_inicio
+     *
+     * @return the value of data_inicio
+     */
+    public String getData_inicio() {
+        return data_inicio;
+    }
+
+    /**
+     * Set the value of data_inicio
+     *
+     * @param data_inicio new value of data_inicio
+     */
+    public void setData_inicio(String data_inicio) {
+        this.data_inicio = data_inicio;
+    }
+
+
+    public Treinos(int codigo) {
+        this.codigo = codigo;
+    }
+    
+    /**
+     * Get the value of codigo
+     *
+     * @return the value of codigo
+     */
+    public int getCodigo() {
+        return codigo;
+    }
+
+
+    /**
+     * Get the value of codigo_aluno
+     *
+     * @return the value of codigo_aluno
+     */
+    public int getCodigo_aluno() {
+        return codigo_aluno;
+    }
+
+    /**
+     * Set the value of codigo_aluno
+     *
+     * @param codigo_aluno new value of codigo_aluno
+     */
+    public void setCodigo_aluno(int codigo_aluno) {
+        this.codigo_aluno = codigo_aluno;
+    }
+
+
+    /**
+     * Get the value of repeticao
+     *
+     * @return the value of repeticao
+     */
+    public int getRepeticao() {
+        return repeticao;
+    }
+
+    /**
+     * Set the value of repeticao
+     *
+     * @param repeticao new value of repeticao
+     */
+    public void setRepeticao(int repeticao) {
+        this.repeticao = repeticao;
+    }
+
+
+    /**
+     * Get the value of series
+     *
+     * @return the value of series
+     */
+    public int getSeries() {
+        return series;
+    }
+
+    /**
+     * Set the value of series
+     *
+     * @param series new value of series
+     */
+    public void setSeries(int series) {
+        this.series = series;
+    }
+
+
+    /**
+     * Get the value of exercicios
+     *
+     * @return the value of exercicios
+     */
+    public String getExercicios() {
+        return exercicios;
+    }
+
+    /**
+     * Set the value of exercicios
+     *
+     * @param exercicios new value of exercicios
+     */
+    public void setExercicios(String exercicios) {
+        this.exercicios = exercicios;
+    }
+
+}
