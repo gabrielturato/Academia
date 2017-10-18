@@ -7,6 +7,8 @@ package academia.bean;
 
 import java.time.LocalDate;
 import academia.arquivo.AtivoArquivo;
+import academia.arquivo.Menu;
+import java.util.Scanner;
 
 /**
  *
@@ -17,25 +19,40 @@ public class Academia {
      * @param args the command line arguments
      */
     public static void main(String[] args){
+        Menu menu;
+        menu = new Menu();
+        Scanner entrada = new Scanner(System.in);
         AtivoArquivo arquivo = new AtivoArquivo();
-        
+      
+        int escolhaPrincipal;
+        int escolhaSub;
+        int escolhaFuncao;
         Ativo aluno;
         aluno = new Ativo();
-        aluno.setCod_aluno(1);
-        aluno.setData_nasc(LocalDate.of(1998, 9, 16));
-        aluno.setEndereco("Rua Benedito de Freitas Nº 185");
-        aluno.setNome("Gabriel");
-        aluno.setRG("52406715-6");
-        aluno.setTelefone("(19)99682-8615");
-        arquivo.adicionaAtivo(aluno);
-        aluno.setCod_aluno(2);
-        aluno.setData_nasc(LocalDate.of(1996, 1, 25));
-        aluno.setEndereco("Rua Benedito de Freitas Nº 185");
-        aluno.setNome("Lucas");
-        aluno.setRG("52406715-6");
-        aluno.setTelefone("(19)3562-4885");
-        arquivo.adicionaAtivo(aluno);
-        arquivo.listaAtivo();
+        
+      
+        //Menu Principal
+        if(menu.getNivelMenu() == 0){
+        menu.exibirMenuPrincipal();
+        System.out.print("Escolha uma opção do menu : ");
+        escolhaPrincipal = entrada.nextInt();
+        System.out.println("Item escolhido : " + escolhaPrincipal);
+        menu.exibirSubMenus(escolhaPrincipal);
+        }
+        if(menu.getNivelMenu() == 1){
+        //Sub Menu
+        System.out.print("Escolha uma opção do menu : ");
+        escolhaSub = entrada.nextInt();
+        System.out.println("Item escolhido : " + escolhaSub);
+        }
+       
+                    
+                
+                
+            
+        
+        
+        
     }
     
 }
