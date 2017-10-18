@@ -11,8 +11,6 @@ import java.time.LocalDate;
  */
 public class Treinos {
     private int cod_treino;
-    private final LocalDate data_inicio;
-    private final LocalDate data_fim;
     private String descricao;
     
     /**
@@ -32,29 +30,7 @@ public class Treinos {
         this.descricao = descricao;
     }
 
-
-    /**
-     * Get the value of data_fim
-     *
-     * @return the value of data_fim
-     */
-    public LocalDate getData_fim() {
-        return data_fim;
-    }
-
-    /**
-     * Get the value of data_inicio
-     *
-     * @return the value of data_inicio
-     */
-    public LocalDate getData_inicio() {
-        return data_inicio;
-    }
-
-
-    public Treinos(LocalDate data_inicio, LocalDate data_fim) {
-        this.data_inicio = LocalDate.now();
-        this.data_fim = data_inicio.plusDays(30);
+    public Treinos() {
     }
     
     /**

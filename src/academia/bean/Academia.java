@@ -6,7 +6,7 @@
 package academia.bean;
 
 import java.time.LocalDate;
-import academia.arquivo.AlunoArquivo;
+import academia.arquivo.AtivoArquivo;
 
 /**
  *
@@ -16,17 +16,26 @@ public class Academia {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        AlunoArquivo arquivo = new AlunoArquivo();
+    public static void main(String[] args){
+        AtivoArquivo arquivo = new AtivoArquivo();
         
         Ativo aluno;
         aluno = new Ativo();
+        aluno.setCod_aluno(1);
         aluno.setData_nasc(LocalDate.of(1998, 9, 16));
         aluno.setEndereco("Rua Benedito de Freitas Nº 185");
         aluno.setNome("Gabriel");
         aluno.setRG("52406715-6");
         aluno.setTelefone("(19)99682-8615");
         arquivo.adicionaAtivo(aluno);
+        aluno.setCod_aluno(2);
+        aluno.setData_nasc(LocalDate.of(1996, 1, 25));
+        aluno.setEndereco("Rua Benedito de Freitas Nº 185");
+        aluno.setNome("Lucas");
+        aluno.setRG("52406715-6");
+        aluno.setTelefone("(19)3562-4885");
+        arquivo.adicionaAtivo(aluno);
+        arquivo.listaAtivo();
     }
     
 }

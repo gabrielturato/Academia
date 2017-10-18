@@ -24,6 +24,15 @@ public class Mensalidade{
         this.data_fim = data_pagamento.plusDays(dias);
     }
     /**
+     * Get the value of valor
+     *
+     * @return the value of valor
+     */
+    public float getValor() {
+        return valor;
+    }
+    
+    /**
      * Set the value of data_fim
      * 
      * @param data_fim new value of data_fim
