@@ -5,17 +5,22 @@
  */
 package academia.arquivo;
 import academia.bean.Ativo;
+import academia.bean.Treinos;
 import java.time.LocalDate;
 import java.util.Scanner;
 import academia.arquivo.AtivoArquivo;
-import academia.arquivo.Menu;
+import academia.arquivo.InativoArquivo;
+import academia.arquivo.TreinosArquivo;
+import academia.exceptions.CodigoException;
 /**
  *
  * @author Gabriel
  */
 public class Menu {
     Scanner entrada = new Scanner(System.in);
-    AtivoArquivo arquivo = new AtivoArquivo();
+    AtivoArquivo ativo = new AtivoArquivo();
+    InativoArquivo inativo = new InativoArquivo();
+    TreinosArquivo arquivoTreino = new TreinosArquivo();
   
    int nivelMenu = 0;
 
@@ -42,11 +47,12 @@ public class Menu {
                 this.nivelMenu = 1;
                 System.out.println("------------- Alunos -------------");
                 System.out.println("*         1. Inserir             *");
-                System.out.println("*         2. Listar              *");
+                System.out.println("*         2. Listar ativos       *");
                 System.out.println("*         3. Buscar por código   *");
                 System.out.println("*         4. Buscar por nome     *");
-                System.out.println("*         5. Excluir             *");
-                System.out.println("*         6. Voltar             *");
+                System.out.println("*         5. Inativar um aluno   *");
+                System.out.println("*         6. Listar inativos     *");
+                System.out.println("*         7. Voltar             *");
                 System.out.print("Escolha uma opção do menu : ");
                 selecao = entrada.nextInt();
                 System.out.println("Item escolhido : " + selecao);
@@ -118,20 +124,22 @@ public class Menu {
                 System.out.println("Opção selecionada : Inserir aluno.");
                 System.out.print("Digite o codigo do aluno : ");
                 codigo = entrada.nextInt();
+                entrada.nextLine();
                 System.out.print("Digite o nome do aluno : ");
-                nome = entrada.next();
+                nome = entrada.nextLine();
                 System.out.print("Digite o dia de nascimento do aluno : ");
                 diaNasc = entrada.nextInt();
                 System.out.print("Digite o mes de nascimento do aluno : ");
                 mesNasc = entrada.nextInt();
                 System.out.print("Digite o ano de nascimento do aluno : ");
                 anoNasc = entrada.nextInt();
+                entrada.nextLine();
                 System.out.print("Digite o endereço do aluno : ");
-                endereco = entrada.next();
+                endereco = entrada.nextLine();
                 System.out.print("Digite o RG do aluno : ");
-                rg = entrada.next();
+                rg = entrada.nextLine();
                 System.out.print("Digite o telefone do aluno : ");
-                telefone = entrada.next();
+                telefone = entrada.nextLine();
                 
                 System.out.println("Cadastrando...");
                 
@@ -143,7 +151,12 @@ public class Menu {
                 aluno.setNome(nome);
                 aluno.setRG(rg);
                 aluno.setTelefone(telefone);
-                arquivo.adicionaAtivo(aluno);
+                try{
+                    ativo.adicionaAtivo(aluno);
+                }catch(CodigoException e){
+                    System.out.println(e.getMessage());
+                    ativo.buscaAtivoCodigo(codigo);
+                }
                 
                  
                 System.out.println("Cadastro efetuado com sucesso!");
@@ -151,9 +164,9 @@ public class Menu {
                 this.nivelMenu = 1;
                 break;
             case 2:
-                //Funcao listar aluno
+                //Funcao listar alunos
                 System.out.println("Opção selecionada : Listar alunos.");
-                arquivo.listaAtivo();
+                ativo.listaAtivo();
                 
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
@@ -161,23 +174,54 @@ public class Menu {
             case 3:
                 //Funcao buscar por código
                 System.out.println("Opção selecionada : Buscar aluno por código.");
+                System.out.print("Digite o código do aluno : ");
+                codigo = entrada.nextInt();
+                aluno=ativo.buscaAtivoCodigo(codigo);
+                System.out.println("-------------Aluno Nº "+aluno.getCod_aluno()+"-------------");
+                System.out.println("Nome: "+aluno.getNome());
+                System.out.println("Endereço: "+aluno.getEndereco());
+                System.out.println("RG: "+aluno.getRG());
+                System.out.println("Telefone: "+aluno.getTelefone());
+                System.out.println("Idade: "+aluno.descobreIdade(aluno.getData_nasc()));
+                
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
                 break;
             case 4:
                 //Funcao buscar por nome
                 System.out.println("Opção selecionada : Buscar aluno por nome.");
+                System.out.print("Digite o nome do aluno : ");
+                entrada.nextLine();
+                nome = entrada.nextLine();
+                aluno=ativo.buscaAtivoNome(nome);
+                System.out.println("-------------Aluno Nº "+aluno.getCod_aluno()+"-------------");
+                System.out.println("Nome: "+aluno.getNome());
+                System.out.println("Endereço: "+aluno.getEndereco());
+                System.out.println("RG: "+aluno.getRG());
+                System.out.println("Telefone: "+aluno.getTelefone());
+                System.out.println("Idade: "+aluno.descobreIdade(aluno.getData_nasc()));
+                
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
                 break;
         
-            case 5:
+            case 5://Não implementado ainda
                 //Funcao excluir
                 System.out.println("Opção selecionada : Excluir alunos.");
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
                 break;
+                
             case 6:
+                //Funcao listar alunos inativos
+                System.out.println("Opção selecionada : Listar alunos inativos.");
+                inativo.listaInativo();
+                
+                exibirSubMenus(1);
+                this.nivelMenu = 1;
+                break;
+                
+            case 7:
                 //Funcao voltar
                  this.nivelMenu = 0;
                 exibirMenuPrincipal();
@@ -193,17 +237,33 @@ public class Menu {
         switch (opcao) {
             case 1:
                  //Funcao inserir treino
-                System.out.println("Opção selecionada : Inserir alunos.");
+                System.out.println("Opção selecionada : Inserir treinos.");
+                Treinos treino = new Treinos();
+                int cod_treino;
+                String descricao;
+                System.out.print("Digite o código do treino : ");
+                cod_treino = entrada.nextInt();
+                entrada.nextLine();
+                System.out.print("Escreva o treino : ");
+                descricao = entrada.nextLine();
+                
+                treino.setCod_treino(cod_treino);
+                treino.setDescricao(descricao);
+                
+                arquivoTreino.adicionaTreino(treino);
+                
                 exibirSubMenus(2);
                 this.nivelMenu = 1;
                 break;
             case 2:
                 //Funcao listar treino
                 System.out.println("Opção selecionada :  Listar treinos.");
+                arquivoTreino.listaTreinos();
+                
                 exibirSubMenus(2);
                 this.nivelMenu = 1;
                 break;
-            case 3:
+            case 3://Não implementado ainda
                 //Funcao vincular a um aluno
                 System.out.println("Opção selecionada : Vincular treino a um aluno.");
                 exibirSubMenus(2);
@@ -212,7 +272,13 @@ public class Menu {
             case 4:
                 //Funcao buscar treino por codigo
                 System.out.println("Opção selecionada : Buscar treino por código.");
-                 exibirSubMenus(2);
+                System.out.print("Digite o código do treino : ");
+                cod_treino = entrada.nextInt();
+                treino=arquivoTreino.buscaTreinoCodigo(cod_treino);
+                System.out.println("-------------Treino Nº "+treino.getCod_treino()+"-------------");
+                System.out.println("Descrição: "+treino.getDescricao());
+                
+                exibirSubMenus(2);
                 this.nivelMenu = 1;
                 break;
             case 5:

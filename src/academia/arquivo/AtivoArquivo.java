@@ -15,26 +15,71 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
+import academia.exceptions.CodigoException;
 
 /**
  *
  * @author Turato
  */
 public class AtivoArquivo {
-     public void adicionaAtivo(Ativo a){
+    public Ativo buscaAtivoCodigo(int cod_aluno){
+        FileReader arquivo = null;
+        BufferedReader br = null;
         try{
-            FileWriter arquivo = new FileWriter("alunos_ativos.txt",true);
-            BufferedWriter escrever = new BufferedWriter(arquivo);
-            
-            String linha = a.getCod_aluno()+";"+a.getNome()+";"+a.getEndereco()+";"+a.getRG()+";"+a.getTelefone()+";"+a.getData_nasc().toString()+"\n";
-            escrever.write(linha);
-            
-            escrever.close();
-            arquivo.close();
-        }catch(IOException  e){
-            System.err.println("Erro ao escrever o arquivo");
+            arquivo = new FileReader("alunos_ativos.txt"); 
+            br = new BufferedReader(arquivo);
+            String linha;
+            do{
+                linha=null;
+                try{
+                linha = br.readLine();
+                }catch(IOException e){
+                    System.out.println("Erro a ler a linha");
+                }
+                if(linha!=null){
+                    String[] palavras = linha.split(";"); 
+                    if(parseInt(palavras[0])==cod_aluno){
+                        Ativo a = new Ativo();
+                        a.setCod_aluno(parseInt(palavras[0]));
+                        a.setNome(palavras[1]);
+                        a.setEndereco(palavras[2]);
+                        a.setRG(palavras[3]);
+                        a.setTelefone(palavras[4]);
+                        a.setData_nasc(parse(palavras[5]));
+                        return a;
+                    }
+                }
+            }while(linha!=null);
+        }catch(FileNotFoundException e){
+                System.err.println("Arquivo não encontrado");
+        }finally{
+            try{
+                br.close();
+                arquivo.close(); 
+            }catch(IOException e){
+                System.err.println("Erro ao fechar o arquivo");
+            }
         }
-            System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
+        return null;     
+     }
+     public void adicionaAtivo(Ativo a) throws CodigoException{
+        if(buscaAtivoCodigo(a.getCod_aluno())==a){
+            throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
+        }else{
+            try{
+                FileWriter arquivo = new FileWriter("alunos_ativos.txt",true);
+                BufferedWriter escrever = new BufferedWriter(arquivo);
+                
+                String linha = a.getCod_aluno()+";"+a.getNome()+";"+a.getEndereco()+";"+a.getRG()+";"+a.getTelefone()+";"+a.getData_nasc().toString()+"\n";
+                escrever.write(linha);
+                
+                escrever.close();
+                arquivo.close();
+            }catch(IOException  e){
+                System.err.println("Erro ao escrever o arquivo");
+            }
+                System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
+        }
     }
      
      public void listaAtivo(){
@@ -74,47 +119,6 @@ public class AtivoArquivo {
                 System.err.println("Erro ao fechar o arquivo");
             }
         }
-     }
-    
-     public Ativo buscaAtivoCodigo(int cod_aluno){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("alunos_ativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(parseInt(palavras[0])==cod_aluno){
-                        Ativo a = new Ativo();
-                        a.setCod_aluno(parseInt(palavras[0]));
-                        a.setNome(palavras[1]);
-                        a.setEndereco(palavras[2]);
-                        a.setRG(palavras[3]);
-                        a.setTelefone(palavras[4]);
-                        a.setData_nasc(parse(palavras[5]));
-                        return a;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
-        }
-        return null;     
      }
 
     public Ativo buscaAtivoNome(String nome){

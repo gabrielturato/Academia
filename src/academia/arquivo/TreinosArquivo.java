@@ -5,6 +5,7 @@
  */
 package academia.arquivo;
 
+import academia.bean.Inativo;
 import academia.bean.Treinos;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
+import static java.time.LocalDate.parse;
 
 /**
  *
@@ -66,5 +69,42 @@ public class TreinosArquivo {
                 System.err.println("Erro ao fechar o arquivo");
             }
         }
+     }
+    
+    public Treinos buscaTreinoCodigo(int cod_treino){
+        FileReader arquivo = null;
+        BufferedReader br = null;
+        try{
+            arquivo = new FileReader("treinos.txt"); 
+            br = new BufferedReader(arquivo);
+            String linha;
+            do{
+                linha=null;
+                try{
+                linha = br.readLine();
+                }catch(IOException e){
+                    System.out.println("Erro a ler a linha");
+                }
+                if(linha!=null){
+                    String[] palavras = linha.split(";"); 
+                    if(parseInt(palavras[0])==cod_treino){
+                        Treinos t = new Treinos();
+                        t.setCod_treino(parseInt(palavras[0]));
+                        t.setDescricao(palavras[1]);
+                        return t;
+                    }
+                }
+            }while(linha!=null);
+        }catch(FileNotFoundException e){
+                System.err.println("Arquivo não encontrado");
+        }finally{
+            try{
+                br.close();
+                arquivo.close(); 
+            }catch(IOException e){
+                System.err.println("Erro ao fechar o arquivo");
+            }
+        }
+        return null;     
      }
 }

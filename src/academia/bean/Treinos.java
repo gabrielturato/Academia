@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package academia.bean;
-import java.time.LocalDate;
 /**
  *
  * @author Turato
@@ -31,6 +30,7 @@ public class Treinos {
     }
 
     public Treinos() {
+        
     }
     
     /**
@@ -41,12 +41,20 @@ public class Treinos {
     public int getCod_treino() {
         return cod_treino;
     }
+
+    /**
+     * Set the value of cod_treino
+     * 
+     * @param cod_treino new value of cod_treino 
+     */
+    public void setCod_treino(int cod_treino) {
+        this.cod_treino = cod_treino;
+    }
+    
+    
     
     public boolean cadastrarTreino(String descricao){
      this.descricao = descricao;
      return true;
-    }
-    public void consultarTreino(int codigo){
-        //Fazer na classe de controle
     }
 }

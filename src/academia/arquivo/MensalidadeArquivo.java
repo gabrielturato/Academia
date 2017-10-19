@@ -5,6 +5,7 @@
  */
 package academia.arquivo;
 
+import academia.bean.Catraca;
 import academia.bean.Mensalidade;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,6 +14,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
+import static java.time.LocalDate.parse;
+import static java.lang.Float.parseFloat;
+import static java.time.Period.between;
+import java.time.Period;
+import java.time.LocalDate;
 
 /**
  *
@@ -39,7 +46,7 @@ public class MensalidadeArquivo {
             System.out.println("Pagamento do aluno Nº "+m.getCod_aluno()+" foi registrado no valor de: "+m.getValor());
     }
 
-    public void listaEntradas(){
+    public void listaMensalidades(){
         FileReader arquivo = null;
         BufferedReader br = null;
         try{
@@ -75,5 +82,46 @@ public class MensalidadeArquivo {
             }
         }
      }
-   
+    public Mensalidade buscaMensalidadeCodigo(int cod_aluno){
+        FileReader arquivo = null;
+        BufferedReader br = null;
+        try{
+            arquivo = new FileReader("mensalidades.txt"); 
+            br = new BufferedReader(arquivo);
+            String linha;
+            do{
+                linha=null;
+                try{
+                linha = br.readLine();
+                }catch(IOException e){
+                    System.out.println("Erro a ler a linha");
+                }
+                if(linha!=null){
+                    String[] palavras = linha.split(";"); 
+                    if(parseInt(palavras[0])==cod_aluno){
+                        LocalDate data_inicio, data_fim;
+                        int dias,codigo;
+                        float valor;
+                        data_inicio= parse(palavras[2]);
+                        data_fim=parse(palavras[3]);
+                        codigo= parseInt(palavras[0]);
+                        valor= parseFloat(palavras[1]);
+                        dias=between(data_inicio,data_fim).getDays();
+                        Mensalidade m = new Mensalidade(data_inicio,valor,codigo,dias);
+                        return m;
+                    }
+                }
+            }while(linha!=null);
+        }catch(FileNotFoundException e){
+                System.err.println("Arquivo não encontrado");
+        }finally{
+            try{
+                br.close();
+                arquivo.close(); 
+            }catch(IOException e){
+                System.err.println("Erro ao fechar o arquivo");
+            }
+        }
+        return null;     
+     }
 }

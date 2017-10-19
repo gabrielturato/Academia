@@ -13,7 +13,7 @@ public class Catraca {
     private final LocalDate data_entrada;
     private int cod_aluno;    
 
-    public Catraca(LocalDate data_entrada, LocalDate data_saida) {
+    public Catraca(LocalDate data_entrada) {
         this.data_entrada = data_entrada;
     }
     
