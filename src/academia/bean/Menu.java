@@ -3,23 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package academia.arquivo;
-import academia.bean.Ativo;
-import academia.bean.Treinos;
-import academia.bean.Mensalidade;
-import academia.bean.Catraca;
+package academia.bean;
 import java.time.LocalDate;
 import java.util.Scanner;
 import academia.arquivo.AtivoArquivo;
-import academia.arquivo.InativoArquivo;
-import academia.arquivo.TreinosArquivo;
-import academia.arquivo.MensalidadeArquivo;
 import academia.arquivo.CatracaArquivo;
+import academia.arquivo.InativoArquivo;
+import academia.arquivo.MensalidadeArquivo;
+import academia.arquivo.TreinosArquivo;
 import academia.exceptions.CodigoException;
-import java.time.Month;
 /**
- *
- * @author Gabriel
+ * Responsável pela impressão de menus no console
+ * @author Gabriel Casemiro
  */
 public class Menu {
     Scanner entrada = new Scanner(System.in);
@@ -30,14 +25,23 @@ public class Menu {
     CatracaArquivo arquivoCatraca = new CatracaArquivo();
   
    int nivelMenu = 0;
-
+   /**
+    * Pega o nível do menu da classe e retorna
+    * @return nivelMenu do menu sendo mostrado no console 
+    */
     public int getNivelMenu() {
         return nivelMenu;
     }
-
+    /**
+     * Insere qual nível que o menu deve se encontrar
+     * @param nivelMenu a ser mostrado no console
+     */
     public void setNivelMenu(int nivelMenu) {
         this.nivelMenu = nivelMenu;
     }
+    /**
+     * Exibe menu principal no console
+     */
     public void exibirMenuPrincipal(){
         System.out.println("--------- Menu Academia ---------");
         System.out.println("*         1. Alunos             *");
@@ -47,6 +51,14 @@ public class Menu {
         System.out.println("*         5. Sair               *");
         
     }
+    /**
+     * Exibe os sub menus ao serem selecionados no menu principal
+     * 1 = Alunos
+     * 2 = Treinos
+     * 3 = Mensalidade
+     * 4 = Entrada
+     * @param opcao 1,2,3,4
+     */
     public void exibirSubMenus(int opcao){
         int selecao;
         switch (opcao) {
@@ -113,7 +125,10 @@ public class Menu {
         }
         
     }
-    //Aluno
+    /**
+     * Ao submenu de aluno selecionado, escolher as opções
+     * @param opcao a ser selecionada
+     */
     public void alunosMenu(int opcao){
         Ativo aluno;
         aluno = new Ativo();
@@ -239,7 +254,10 @@ public class Menu {
         
         }
     }
-    //Treino
+    /**
+     * Ao submenu de treinos ser selecionado, escolher a opção
+     * @param opcao a ser selecionada
+     */
       public void treinoMenu(int opcao){
         Treinos treino = new Treinos();
         int cod_treino;
@@ -299,7 +317,10 @@ public class Menu {
         
         }
     }
-      //Mensalidade
+      /**
+       * Ao submenu de treinos ser selecionado, escolher a opção
+       * @param opcao a ser selecionada
+       */
        public void mensalidadeMenu(int opcao){
         int cod_aluno;
         int dias;
@@ -355,7 +376,10 @@ public class Menu {
         
         }
     }
-  //Catraca
+       /**
+        * Ao submenu de catraca ser selecionado, escolher a opção
+        * @param opcao a ser selecionada
+        */
          public void catracaMenu(int opcao){
         int cod_aluno;
         Catraca catraca;

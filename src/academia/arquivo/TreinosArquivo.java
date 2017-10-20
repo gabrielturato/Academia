@@ -18,16 +18,20 @@ import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
 
 /**
- *
+ * Responsável por operações no arquivo treinos.txt
  * @author Turato
  */
 public class TreinosArquivo {
-    public void adicionaTreino(Treinos m){
+    /**
+     * Adiciona um novo treino ao arquivo treinos.txt
+     * @param t, classe Treinos a ser inserida
+     */
+    public void adicionaTreino(Treinos t){
         try{
             FileWriter arquivo = new FileWriter("treinos.txt",true);
             BufferedWriter escrever = new BufferedWriter(arquivo);
             
-            String linha = m.getCod_treino()+";"+m.getDescricao();
+            String linha = t.getCod_treino()+";"+t.getDescricao();
             escrever.write(linha);
             
             escrever.close();
@@ -36,6 +40,10 @@ public class TreinosArquivo {
             System.out.println("Erro ao escrever o arquivo");
         }
     }
+    /**
+     * Lista todos os treinos registrados no
+     * arquivo treinos.txt
+     */
     public void listaTreinos(){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -70,7 +78,12 @@ public class TreinosArquivo {
             }
         }
      }
-    
+    /**
+     * Busca o treino pelo seu respectivo código
+     * no arquivo treinos.txt
+     * @param cod_treino código do treino a ser buscado
+     * @return Treinos, classe para futuras operações
+     */
     public Treinos buscaTreinoCodigo(int cod_treino){
         FileReader arquivo = null;
         BufferedReader br = null;

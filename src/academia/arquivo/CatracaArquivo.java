@@ -16,12 +16,14 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
 /**
- *
+ * Classe que manipula todas as entradas
+ * no arquivo catraca.txt
  * @author Turato
  */
 public class CatracaArquivo {    
     /**
      * Registra uma entrada, caso a mensalidade esteja em dia
+     * 
      * @param c
      */
     public void adicionaEntrada(Catraca c){
@@ -39,7 +41,10 @@ public class CatracaArquivo {
         }
             System.out.println("Entrada do aluno número "+c.getCod_aluno()+" foi registrada no horário "+c.getData_entrada().toString());
     }
-    
+    /**
+     * Lista todas as entradas registradas
+     * no documento entradas.txt
+     */
     public void listaEntradas(){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -74,7 +79,12 @@ public class CatracaArquivo {
             }
         }
      }
-    
+    /**
+     * Busca a última entrada realizada pelo aluno com o
+     * código específicado no arquivo entradas.txt
+     * @param cod_aluno
+     * @return Objeto Catraca
+     */
     public Catraca buscaEntradaCodigo(int cod_aluno){
         FileReader arquivo = null;
         BufferedReader br = null;

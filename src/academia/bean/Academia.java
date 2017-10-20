@@ -7,11 +7,10 @@ package academia.bean;
 
 import java.time.LocalDate;
 import academia.arquivo.AtivoArquivo;
-import academia.arquivo.Menu;
 import java.util.Scanner;
 
 /**
- *
+ * Classe principal
  * @author Turato
  */
 public class Academia {

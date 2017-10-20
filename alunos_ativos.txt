@@ -1,5 +1,1 @@
-1;Gabriel Paulo Turato;Rua Benedito de Freitas N� 185;524067156;19230213019;1998-09-16;1;
-2;Lucas;RSAJNDKAS;312321312;3213123;1996-01-25
-1;Jose;Rua Joaquim Procopio;03120391;903218301;1995-06-09
-1;Gabriel;Rua Benedito de Freitas N� 185;312321321;312321321;1998-09-16
-5;Gabriel;Rua Benedito de Freitas N� 185;524067156;19996828615;1998-09-16
+1;Gabriel;Rua Benedito de Freitas Numero 185;524067156;996828615;1998-09-16

@@ -10,7 +10,7 @@ import academia.bean.Mensalidade;
 import java.util.List;
 
 /**
- *
+ * Responsável por controlar entradas em memória por meio de listas
  * @author Turato
  */
 public class CatracaControle {
@@ -18,8 +18,8 @@ public class CatracaControle {
     
     /**
      * Registra uma entrada, caso a mensalidade esteja em dia
-     * @param C
-     * @param Co
+     * @param C classe responsável pela entrada
+     * @param Co classe para realizar operações
      * @return true or false
      */
     public boolean adicionaEntrada(Catraca C,MensalidadeControle Co){

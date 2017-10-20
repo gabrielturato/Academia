@@ -8,7 +8,7 @@ package academia.bean;
 import java.time.LocalDate;
 
 /**
- *
+ * Classe que cria vinculo entre alunos ativos e treinos
  * @author Turato
  */
 public class AlunoTreino {

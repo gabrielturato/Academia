@@ -13,7 +13,7 @@ import academia.controle.TreinosControle;
 import java.util.List;
 
 /**
- *
+ * Responsável por controlar vínculos em memória por meio de listas.
  * @author Turato
  */
 public class AlunoTreinoControle {
@@ -21,7 +21,7 @@ public class AlunoTreinoControle {
     
     /**
      * Adiciona um vinculo na lista
-     * @param V
+     * @param V vinculo a ser adicionado
      * @return true or false 
      */
     public boolean adicionaVinculo(AlunoTreino V){
@@ -29,8 +29,8 @@ public class AlunoTreinoControle {
     }
     /**
      * Pesquisa o código de aluno na lista e verifica o treino vinculado a esse aluno
-     * @param cod_aluno
-     * @param treinos
+     * @param cod_aluno a ser pesquisado
+     * @param treinos lista de treinos a serem verificados
      * @return null or Treino 
      */
     public Treinos buscaVinculoTreino(int cod_aluno,List<Treinos> treinos){
@@ -52,8 +52,8 @@ public class AlunoTreinoControle {
     }
     /**
      * Pesquisa o código de treino na lista e verifica o aluno vinculado a esse treino
-     * @param cod_treino
-     * @param ativos
+     * @param cod_treino a ser pesquisado
+     * @param ativos lista de alunos ativos a serem verificados
      * @return null or Ativo
      */
     public Ativo buscaVinculoAluno(int cod_treino, List<Ativo> ativos){

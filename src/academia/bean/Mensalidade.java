@@ -7,7 +7,7 @@ package academia.bean;
 import java.time.LocalDate;
 
 /**
- *
+ * Controla dados a respeito da mensalidade
  * @author Turato
  */
 public class Mensalidade{
@@ -16,7 +16,12 @@ public class Mensalidade{
     int cod_aluno;
     private final LocalDate data_pagamento;
     private final LocalDate data_fim;
-
+    /**
+     * Contrutor da classe
+     * @param valor pago na mensalidade
+     * @param cod_aluno do aluno que realizou o pagamento
+     * @param dias quantidade de dias que foram pagos
+     */
     public Mensalidade(float valor, int cod_aluno, int dias) {
         this.data_pagamento = LocalDate.now();
         this.valor = valor;

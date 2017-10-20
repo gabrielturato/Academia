@@ -8,7 +8,8 @@ package academia.bean;
 import java.time.LocalDate;
 import java.time.Period;
 /**
- *
+ * Classe responsável por invalidar os alunos ativos que não frequentam mais
+ * a academia por uma quantidade de tempo
  * @author Turato
  */
 public class Inativo extends Aluno{

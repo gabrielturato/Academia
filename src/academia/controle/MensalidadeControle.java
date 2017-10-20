@@ -9,7 +9,8 @@ import academia.bean.Mensalidade;
 import java.util.List;
 
 /**
- *
+ * Responsável por controlar em memória as mensalidades
+ * por meio de listas.
  * @author Turato
  */
 public class MensalidadeControle {
@@ -17,7 +18,7 @@ public class MensalidadeControle {
     
     /**
      * Adiciona mensalidade na lista
-     * @param M
+     * @param M Mensalidade a ser adicionada
      * @return true or false
      */
     public boolean adicionaMensalidade(Mensalidade M){
@@ -26,7 +27,7 @@ public class MensalidadeControle {
     
     /**
      * Busca a mensalidade com o código específico na lista
-     * @param cod_aluno
+     * @param cod_aluno a ser pesquisado na lista de mensalidades
      * @return object mensalidade or null
      */
     public Mensalidade buscaMensalidade(int cod_aluno){

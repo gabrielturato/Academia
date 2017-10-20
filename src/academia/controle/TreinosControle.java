@@ -9,7 +9,7 @@ import academia.bean.Treinos;
 import java.util.List;
 
 /**
- *
+ * Classe que controla treinos em memória por meio de listas
  * @author Turato
  */
 public class TreinosControle {
@@ -17,7 +17,7 @@ public class TreinosControle {
         
      /**
      * Adiciona treino na lista
-     * @param T
+     * @param T treino a ser adicionado
      * @return true or false
      */  
     public boolean adicionaTreino(Treinos T){
@@ -36,7 +36,7 @@ public class TreinosControle {
     }
     /**
      * Busca o treino pelo código
-     * @param cod_treino
+     * @param cod_treino a ser buscado na lista
      * @return Treino
      */
     public Treinos buscaTreino(int cod_treino){
@@ -50,7 +50,7 @@ public class TreinosControle {
     }
     /**
      * Deleta o treino se ele existir
-     * @param cod_treino
+     * @param cod_treino a ser deletado da lista
      * @return true or false
      */
     public boolean deletaTreino(int cod_treino){

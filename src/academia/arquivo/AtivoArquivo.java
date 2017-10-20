@@ -16,12 +16,23 @@ import java.io.FileReader;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
 import academia.exceptions.CodigoException;
+import academia.exceptions.NaoExisteException;
 
 /**
- *
+ * Classe responsável por fazer operações com
+ * alunos ativos em um arquivo .txt
+ * 
  * @author Turato
  */
 public class AtivoArquivo {
+    /**
+     * Busca o aluno ativo no documento alunos_ativos.txt
+     * através de seu código identificador
+     * 
+     * @param cod_aluno
+     * 
+     * @return classe Ativo
+     */
     public Ativo buscaAtivoCodigo(int cod_aluno){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -62,10 +73,17 @@ public class AtivoArquivo {
         }
         return null;     
      }
+    /**
+     * Adiciona alunos ativos ao documento alunos_ativos.txt
+     * 
+     * @param a classe Ativo
+     * 
+     * @throws CodigoException caso o código
+     * de aluno já exista, não permite cadastrar
+     * novamente
+     */
      public void adicionaAtivo(Ativo a) throws CodigoException{
-        if(buscaAtivoCodigo(a.getCod_aluno())==a){
-            throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
-        }else{
+        if(buscaAtivoCodigo(a.getCod_aluno())==null){
             try{
                 FileWriter arquivo = new FileWriter("alunos_ativos.txt",true);
                 BufferedWriter escrever = new BufferedWriter(arquivo);
@@ -78,10 +96,15 @@ public class AtivoArquivo {
             }catch(IOException  e){
                 System.err.println("Erro ao escrever o arquivo");
             }
-                System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
+            System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
+        }else{
+            throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
         }
     }
-     
+     /**
+      * Lista todos os alunos ativos
+      * existentes no arquivo alunos_ativos.txt
+      */
      public void listaAtivo(){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -120,7 +143,12 @@ public class AtivoArquivo {
             }
         }
      }
-
+    /**
+     * Busca um aluno ativo por nome 
+     * no arquivo alunos_ativos.txt
+     * @param nome
+     * @return 
+     */
     public Ativo buscaAtivoNome(String nome){
         FileReader arquivo = null;
         BufferedReader br = null;

@@ -6,7 +6,7 @@
 package academia.bean;
 import java.time.LocalDate;
 /**
- *
+ * Interface aluno para ativos e inativos serem implementadas
  * @author Turato
  */
 public abstract class Aluno {

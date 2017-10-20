@@ -5,7 +5,7 @@
  */
 package academia.bean;
 /**
- *
+ * Classe que registra treinos
  * @author Turato
  */
 public class Treinos {

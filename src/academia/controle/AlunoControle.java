@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- *
+ * Responsável por controlar alunos em memória por meio de listas.
  * @author Turato
  */
 public class AlunoControle {
@@ -23,7 +23,7 @@ public class AlunoControle {
     }
     /**
      * Transforma aluno ativo em um aluno inativo
-     * @param a
+     * @param a classe do aluno ativo
      * @return aluno inativo b
      */
     public Inativo transformaInativo(Ativo a){
@@ -45,7 +45,7 @@ public class AlunoControle {
     /**
      * Busca aluno na lista e o deleta da lista de ativos
      * E o envia para a lista de inativos (falta implementar)
-     * @param codigo
+     * @param codigo do aluno a ser deletado
      * @return 
      */
     public boolean desativaAluno(int codigo){
@@ -63,8 +63,8 @@ public class AlunoControle {
     /**
      * Busca aluno na lista e devolve o objeto
      * Caso não ache retorna null
-     * @param codigo
-     * @return 
+     * @param codigo do aluno a ser buscado
+     * @return Ativo, objeto do aluno
      */
     public Ativo buscaAtivo(int codigo){
         Ativo a = ativos.get(codigo);
@@ -87,7 +87,7 @@ public class AlunoControle {
     }
     /**
      * Adiciona aluno inativo ao lista inativos
-     * @param a
+     * @param a Inativo a ser adicionado a lista
      * @return 
      */
     public boolean adicionaInativo(Inativo a){
@@ -95,7 +95,7 @@ public class AlunoControle {
     }
     /**
      * Transforma aluno inativo em um aluno ativo
-     * @param a
+     * @param a Inativo a ser transformado
      * @return aluno ativo b
      */
     public Ativo transformaAtivo(Inativo a){
@@ -118,7 +118,7 @@ public class AlunoControle {
     /**
      * Busca aluno na lista e o deleta da lista de inativos
      * E o envia para a lista de ativos (falta implementar)
-     * @param codigo
+     * @param codigo do aluno inativo a ser reativado
      * @return 
      */
     public boolean reativaAluno(int codigo){

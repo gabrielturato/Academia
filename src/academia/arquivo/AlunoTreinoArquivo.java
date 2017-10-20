@@ -19,6 +19,12 @@ import java.io.IOException;
  * @author Turato
  */
 public class AlunoTreinoArquivo {
+    /**
+     * Classe que adiciona a classe de vínculos
+     * treino com alunos no arquivo vinculos.txt
+     * 
+     * @param at vínculo dos treinos clsse AlunoTreino
+     */
     public void adicionaVinculo(AlunoTreino at){
         try{
             FileWriter arquivo = new FileWriter("vinculos.txt",true);
@@ -34,7 +40,10 @@ public class AlunoTreinoArquivo {
         }
         System.out.println("Treino Nº "+at.getCod_treino()+" vinculado com o aluno Nº "+at.getCod_aluno());
     }
-    
+    /**
+     * Método que consulta vinculos no arquivo vinculos.txt
+     * e lista todos eles
+     */
     public void listaVinculos(){
         FileReader arquivo = null;
         BufferedReader br = null;

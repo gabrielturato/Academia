@@ -8,7 +8,8 @@ package academia.bean;
 import java.time.LocalDate;
 import java.time.Period;
 /**
- *
+ * Classe dos alunos ativos no sistema
+ * Overrides documentados na classe abstrata Aluno
  * @author Turato
  */
     public class Ativo extends Aluno{

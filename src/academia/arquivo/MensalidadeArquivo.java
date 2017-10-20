@@ -22,13 +22,13 @@ import java.time.Period;
 import java.time.LocalDate;
 
 /**
- *
+ * Classe que opera dados no arquivo mensalidades.txt
  * @author Turato
  */
 public class MensalidadeArquivo {
      /**
      * Registra uma mensalidade paga
-     * @param m
+     * @param m , classe a ser inserida
      */
     public void adicionaMensalidade(Mensalidade m){
         try{
@@ -45,7 +45,9 @@ public class MensalidadeArquivo {
         }
             System.out.println("Pagamento do aluno Nº "+m.getCod_aluno()+" foi registrado no valor de: "+m.getValor());
     }
-
+    /**
+     * Lista todas as mensalidades pagas no arquivo mensalidades.txt
+     */
     public void listaMensalidades(){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -82,6 +84,12 @@ public class MensalidadeArquivo {
             }
         }
      }
+    /**
+     * Busca a primeira mensalidade paga pelo aluno
+     * de código especificado
+     * @param cod_aluno código a ser procurado
+     * @return Mensalidade, classe para futuras operações
+     */
     public Mensalidade buscaMensalidadeCodigo(int cod_aluno){
         FileReader arquivo = null;
         BufferedReader br = null;

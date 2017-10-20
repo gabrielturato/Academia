@@ -16,10 +16,16 @@ import java.io.IOException;
 import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
 /**
- *
+ * Classe que trabalha com alunos inativos
+ * no arquivo alunos_inativos.txt
  * @author Turato
  */
 public class InativoArquivo {
+        /**
+         * Adiciona um aluno inativo ao documento
+         * alunos_inativos.txt
+         * @param i novo aluno inativo a ser adicionado
+         */
         public void adicionaInativo(Inativo i){
         try{
             FileWriter arquivo = new FileWriter("alunos_inativos.txt",true);
@@ -36,7 +42,10 @@ public class InativoArquivo {
             System.out.println("Aluno "+i.getNome()+" foi inativado");
 
     }
-        
+     /**
+      * Lista todos os alunos inativos no
+      * documento alunos_inativos.txt
+      */
      public void listaInativo(){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -75,7 +84,12 @@ public class InativoArquivo {
             }
         }
      }
-     
+     /**
+      * Busca alunos inativos no documento alunos_inativos.txt
+      * através de seus respectivos códigos identificadores
+      * @param cod_aluno código identificador do aluno inativo
+      * @return Inativo, classe para futuras operações
+      */
      public Inativo buscaInativoCodigo(int cod_aluno){
         FileReader arquivo = null;
         BufferedReader br = null;
@@ -116,7 +130,12 @@ public class InativoArquivo {
         }
         return null;     
      }
-
+    /**
+     * Busca todos o aluno inativo a partir
+     * de seu nome no arquivo alunos_inativos.txt
+     * @param nome a ser pesquisado no arquivo
+     * @return Inativo, classe para futuras operações
+     */
     public Inativo buscaInativoNome(String nome){
         FileReader arquivo = null;
         BufferedReader br = null;

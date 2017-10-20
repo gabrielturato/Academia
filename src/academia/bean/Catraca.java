@@ -6,13 +6,16 @@
 package academia.bean;
 import java.time.LocalDate;
 /**
- *
+ * Classe que registra a entrada de alunos
  * @author Turato
  */
 public class Catraca {
     private final LocalDate data_entrada;
     private int cod_aluno;    
-
+    /**
+     * Construtor da classe Catraca
+     * @param data_entrada data em que foi registrada a entrada
+     */
     public Catraca(LocalDate data_entrada) {
         this.data_entrada = data_entrada;
     }
