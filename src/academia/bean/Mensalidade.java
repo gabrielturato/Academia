@@ -15,9 +15,9 @@ public class Mensalidade{
     private final float valor;
     int cod_aluno;
     private final LocalDate data_pagamento;
-    private LocalDate data_fim;
+    private final LocalDate data_fim;
 
-    public Mensalidade(LocalDate data_pagamento,float valor, int cod_aluno, int dias) {
+    public Mensalidade(float valor, int cod_aluno, int dias) {
         this.data_pagamento = LocalDate.now();
         this.valor = valor;
         this.cod_aluno = cod_aluno;
@@ -30,15 +30,6 @@ public class Mensalidade{
      */
     public float getValor() {
         return valor;
-    }
-    
-    /**
-     * Set the value of data_fim
-     * 
-     * @param data_fim new value of data_fim
-     */
-    public void setData_fim(LocalDate data_fim) {
-        this.data_fim = data_fim;
     }
     
     /**

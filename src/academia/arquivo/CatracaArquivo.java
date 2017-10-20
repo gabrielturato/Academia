@@ -58,7 +58,7 @@ public class CatracaArquivo {
                 if(linha!=null){
                     String[] palavras = linha.split(";"); 
                     System.out.println("-------------Aluno Nº "+palavras[0]+"-------------");
-                    System.out.println("Horário de Entrada55: "+palavras[1]);
+                    System.out.println("Horário de Entrada: "+palavras[1]);
                 }
             }while(linha!=null);
         }catch(FileNotFoundException e){

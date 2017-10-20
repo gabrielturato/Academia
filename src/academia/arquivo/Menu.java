@@ -6,12 +6,17 @@
 package academia.arquivo;
 import academia.bean.Ativo;
 import academia.bean.Treinos;
+import academia.bean.Mensalidade;
+import academia.bean.Catraca;
 import java.time.LocalDate;
 import java.util.Scanner;
 import academia.arquivo.AtivoArquivo;
 import academia.arquivo.InativoArquivo;
 import academia.arquivo.TreinosArquivo;
+import academia.arquivo.MensalidadeArquivo;
+import academia.arquivo.CatracaArquivo;
 import academia.exceptions.CodigoException;
+import java.time.Month;
 /**
  *
  * @author Gabriel
@@ -21,6 +26,8 @@ public class Menu {
     AtivoArquivo ativo = new AtivoArquivo();
     InativoArquivo inativo = new InativoArquivo();
     TreinosArquivo arquivoTreino = new TreinosArquivo();
+    MensalidadeArquivo arquivoMensalidade = new MensalidadeArquivo();
+    CatracaArquivo arquivoCatraca = new CatracaArquivo();
   
    int nivelMenu = 0;
 
@@ -45,14 +52,14 @@ public class Menu {
         switch (opcao) {
             case 1:
                 this.nivelMenu = 1;
-                System.out.println("------------- Alunos -------------");
-                System.out.println("*         1. Inserir             *");
-                System.out.println("*         2. Listar ativos       *");
-                System.out.println("*         3. Buscar por código   *");
-                System.out.println("*         4. Buscar por nome     *");
-                System.out.println("*         5. Inativar um aluno   *");
-                System.out.println("*         6. Listar inativos     *");
-                System.out.println("*         7. Voltar             *");
+                System.out.println("--------------------- Alunos ----------------------");
+                System.out.println("*         1. Inserir                              *");
+                System.out.println("*         2. Listar ativos                        *");
+                System.out.println("*         3. Buscar por código                    *");
+                System.out.println("*         4. Buscar por nome                      *");
+                System.out.println("*         5. Inativar um aluno-> Não implementado *");
+                System.out.println("*         6. Listar inativos                      *");
+                System.out.println("*         7. Voltar                               *");
                 System.out.print("Escolha uma opção do menu : ");
                 selecao = entrada.nextInt();
                 System.out.println("Item escolhido : " + selecao);
@@ -86,7 +93,7 @@ public class Menu {
                 
                 break;
             case 4:
-                System.out.println("------------ Catraca -------------");
+                System.out.println("------------ Entrada -------------");
                 System.out.println("*         1. Inserir             *");
                 System.out.println("*         2. Listar              *");
                 System.out.println("*         3. Buscar por código   *");
@@ -108,19 +115,19 @@ public class Menu {
     }
     //Aluno
     public void alunosMenu(int opcao){
+        Ativo aluno;
+        aluno = new Ativo();
+        String nome;
+        int codigo;
+        String endereco;
+        String rg;
+        int anoNasc;
+        int mesNasc;
+        int diaNasc;
+        String telefone;
         switch (opcao) {
             case 1:
                 //Funcao inserir aluno
-                Ativo aluno;
-                aluno = new Ativo();
-                String nome;
-                int codigo;
-                String endereco;
-                String rg;
-                int anoNasc;
-                int mesNasc;
-                int diaNasc;
-                String telefone;
                 System.out.println("Opção selecionada : Inserir aluno.");
                 System.out.print("Digite o codigo do aluno : ");
                 codigo = entrada.nextInt();
@@ -207,7 +214,7 @@ public class Menu {
         
             case 5://Não implementado ainda
                 //Funcao excluir
-                System.out.println("Opção selecionada : Excluir alunos.");
+                System.out.println("Opção selecionada : Inativar um aluno.");
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
                 break;
@@ -234,13 +241,13 @@ public class Menu {
     }
     //Treino
       public void treinoMenu(int opcao){
+        Treinos treino = new Treinos();
+        int cod_treino;
+        String descricao;
         switch (opcao) {
             case 1:
                  //Funcao inserir treino
                 System.out.println("Opção selecionada : Inserir treinos.");
-                Treinos treino = new Treinos();
-                int cod_treino;
-                String descricao;
                 System.out.print("Digite o código do treino : ");
                 cod_treino = entrada.nextInt();
                 entrada.nextLine();
@@ -294,32 +301,50 @@ public class Menu {
     }
       //Mensalidade
        public void mensalidadeMenu(int opcao){
+        int cod_aluno;
+        int dias;
+        float valor;
         switch (opcao) {
             case 1:
                  //Funcao inserir mensalidade
                 System.out.println("Opção selecionada : Inserir mensalidade.");
+                System.out.print("Digite o código do aluno : ");
+                cod_aluno = entrada.nextInt();
+                System.out.print("Digite o valor da mensalidade : ");
+                valor = entrada.nextFloat();
+                entrada.nextLine();
+                System.out.print("Digite a quantidade de dias que será paga : ");
+                dias = entrada.nextInt();
+                
+                Mensalidade mensalidade = new Mensalidade(valor,cod_aluno,dias);
+                
+                arquivoMensalidade.adicionaMensalidade(mensalidade);
+                
                 exibirSubMenus(3);
                 this.nivelMenu = 1;
                 break;
             case 2:
                 //Funcao listar mensalidades
                 System.out.println("Opção selecionada : Listar mensalidades.");
+                arquivoMensalidade.listaMensalidades();
                 exibirSubMenus(3);
                 this.nivelMenu = 1;
                 break;
             case 3:
-                //Funcao vincular mensalidade a um aluno
-                System.out.println("Opção selecionada : Vincular mensalidade a um aluno.");
+                //Funcao buscar mensalidade por código
+                System.out.println("Opção selecionada : Buscar mensalidade por código.");
+                System.out.print("Digite o código do aluno : ");
+                cod_aluno = entrada.nextInt();
+                mensalidade=arquivoMensalidade.buscaMensalidadeCodigo(cod_aluno);
+                System.out.println("-------------Aluno Nº "+mensalidade.getCod_aluno()+"-------------");
+                System.out.println("Valor: "+mensalidade.getValor());
+                System.out.println("Data de Pagamento (Data que a operação foi feita no sistema): "+mensalidade.getData_pagamento());
+                System.out.println("Dura até o dia: "+mensalidade.getData_fim());
+                
                 exibirSubMenus(3);
                 this.nivelMenu = 1;
                 break;
             case 4:
-                //Funcao buscar mensalidade por código
-                System.out.println("Opção selecionada : Buscar mensalidade por código.");
-                 exibirSubMenus(3);
-                this.nivelMenu = 1;
-                break;
-            case 5:
                 //Funcao voltar
                  this.nivelMenu = 0;
                 exibirMenuPrincipal();
@@ -332,26 +357,42 @@ public class Menu {
     }
   //Catraca
          public void catracaMenu(int opcao){
+        int cod_aluno;
+        Catraca catraca;
         switch (opcao) {
             case 1:
                  //Funcao inserir catraca
                 System.out.println("Opção selecionada : Inserir catraca.");
+                System.out.print("Digite o código do aluno : ");
+                cod_aluno = entrada.nextInt();
+                catraca = new Catraca(LocalDate.now());
+                catraca.setCod_aluno(cod_aluno);
+                arquivoCatraca.adicionaEntrada(catraca);
+                
                 exibirSubMenus(4);
                 this.nivelMenu = 1;
                 break;
             case 2:
                 //Funcao listar catracas
                 System.out.println("Opção selecionada : Listar catraca.");
+                arquivoCatraca.listaEntradas();
+                
                 exibirSubMenus(4);
                 this.nivelMenu = 1;
                 break;
             case 3:
                 //Funcao buscar por código de aluno
                 System.out.println("Opção selecionada : Buscar catraca por código de aluno.");
+                System.out.print("Digite o código do aluno : ");
+                cod_aluno = entrada.nextInt();
+                catraca=arquivoCatraca.buscaEntradaCodigo(cod_aluno);
+                System.out.println("-------------Aluno Nº "+catraca.getCod_aluno()+"-------------");
+                System.out.println("Horário de Entrada55: "+catraca.getData_entrada());
+                
                 exibirSubMenus(4);
                 this.nivelMenu = 1;
                 break;
-            case 5:
+            case 4:
                 //Funcao voltar
                  this.nivelMenu = 0;
                 exibirMenuPrincipal();

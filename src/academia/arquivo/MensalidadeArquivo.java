@@ -65,7 +65,7 @@ public class MensalidadeArquivo {
                     String[] palavras = linha.split(";"); 
                     System.out.println("-------------Aluno Nº "+palavras[0]+"-------------");
                     System.out.println("Valor: "+palavras[1]);
-                    System.out.println("Data de Pagamento: "+palavras[2]);
+                    System.out.println("Data de Pagamento (Data que a operação foi feita no sistema): "+palavras[2]);
                     System.out.println("Dura até o dia: "+palavras[3]);
                 }
             }while(linha!=null);
@@ -107,7 +107,7 @@ public class MensalidadeArquivo {
                         codigo= parseInt(palavras[0]);
                         valor= parseFloat(palavras[1]);
                         dias=between(data_inicio,data_fim).getDays();
-                        Mensalidade m = new Mensalidade(data_inicio,valor,codigo,dias);
+                        Mensalidade m = new Mensalidade(valor,codigo,dias);
                         return m;
                     }
                 }
