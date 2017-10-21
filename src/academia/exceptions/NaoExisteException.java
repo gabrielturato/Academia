@@ -6,9 +6,11 @@
 package academia.exceptions;
 
 /**
- *
+ * Exceção para caso o usuário busque algo no documento e não ache
  * @author Turato
  */
-public class NaoExisteException {
-    
+public class NaoExisteException extends Exception{
+    public NaoExisteException(String mensagem){
+        super(mensagem);
+    }
 }

@@ -6,6 +6,9 @@
 package academia.arquivo;
 
 import academia.bean.Catraca;
+import academia.exceptions.CodigoException;
+import academia.exceptions.NaoExisteException;
+import academia.arquivo.MensalidadeArquivo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -28,18 +31,18 @@ public class CatracaArquivo {
      */
     public void adicionaEntrada(Catraca c){
         try{
-            FileWriter arquivo = new FileWriter("entradas.txt",true);
-            BufferedWriter escrever = new BufferedWriter(arquivo);
-            //PESQUISAR MENSALIDADE
-            String linha = c.getCod_aluno()+";"+c.getData_entrada().toString();
-            escrever.write(linha);
+                FileWriter arquivo = new FileWriter("entradas.txt",true);
+                BufferedWriter escrever = new BufferedWriter(arquivo);
+                //PESQUISAR MENSALIDADE
+                String linha = c.getCod_aluno()+";"+c.getData_entrada().toString();
+                escrever.write(linha);
             
-            escrever.close();
-            arquivo.close();
-        }catch(IOException  e){
-            System.out.println("Erro ao escrever o arquivo");
-        }
-            System.out.println("Entrada do aluno número "+c.getCod_aluno()+" foi registrada no horário "+c.getData_entrada().toString());
+                escrever.close();
+                arquivo.close();
+            }catch(IOException  e){
+                System.out.println("Erro ao escrever o arquivo");
+            }
+                System.out.println("Entrada do aluno número "+c.getCod_aluno()+" foi registrada no horário "+c.getData_entrada().toString());
     }
     /**
      * Lista todas as entradas registradas
@@ -84,8 +87,9 @@ public class CatracaArquivo {
      * código específicado no arquivo entradas.txt
      * @param cod_aluno
      * @return Objeto Catraca
+     * @throws NaoExisteException 
      */
-    public Catraca buscaEntradaCodigo(int cod_aluno){
+    public Catraca buscaEntradaCodigo(int cod_aluno) throws NaoExisteException{
         FileReader arquivo = null;
         BufferedReader br = null;
         try{
@@ -118,7 +122,7 @@ public class CatracaArquivo {
                 System.err.println("Erro ao fechar o arquivo");
             }
         }
-        return null;     
+        throw new NaoExisteException("O aluno de código "+cod_aluno+" não tem nenhuma entrada registrada");     
      }
    
 }

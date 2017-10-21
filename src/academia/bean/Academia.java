@@ -23,7 +23,7 @@ public class Academia {
         Scanner entrada = new Scanner(System.in);
         AtivoArquivo arquivo = new AtivoArquivo();
       
-        int escolhaPrincipal;
+        int escolhaPrincipal=0;
         int escolhaSub;
         int escolhaFuncao;
         Ativo aluno;
@@ -31,18 +31,21 @@ public class Academia {
         
       
         //Menu Principal
-        if(menu.getNivelMenu() == 0){
-        menu.exibirMenuPrincipal();
-        System.out.print("Escolha uma opção do menu : ");
-        escolhaPrincipal = entrada.nextInt();
-        System.out.println("Item escolhido : " + escolhaPrincipal);
-        menu.exibirSubMenus(escolhaPrincipal);
-        }
-        if(menu.getNivelMenu() == 1){
-        //Sub Menu
-        System.out.print("Escolha uma opção do menu : ");
-        escolhaSub = entrada.nextInt();
-        System.out.println("Item escolhido : " + escolhaSub);
+        while(escolhaPrincipal!=5)
+        {
+            if(menu.getNivelMenu() == 0){
+                menu.exibirMenuPrincipal();
+                System.out.print("Escolha uma opção do menu : ");
+                escolhaPrincipal = entrada.nextInt();
+                System.out.println("Item escolhido : " + escolhaPrincipal);
+                menu.exibirSubMenus(escolhaPrincipal);
+            }
+            if(menu.getNivelMenu() == 1){
+                //Sub Menu
+                System.out.print("Escolha uma opção do menu : ");
+                escolhaSub = entrada.nextInt();
+                System.out.println("Item escolhido : " + escolhaSub);
+            }
         }
        
                     

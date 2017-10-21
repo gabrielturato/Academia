@@ -6,7 +6,8 @@
 package academia.exceptions;
 
 /**
- *
+ * Exceção caso o usuário digite um código novo no documento e ele já
+ * exista em outro registro.
  * @author Turato
  */
 public class CodigoException extends Exception {

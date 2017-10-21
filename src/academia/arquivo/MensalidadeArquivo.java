@@ -7,6 +7,8 @@ package academia.arquivo;
 
 import academia.bean.Catraca;
 import academia.bean.Mensalidade;
+import academia.exceptions.CodigoException;
+import academia.exceptions.NaoExisteException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,21 +31,27 @@ public class MensalidadeArquivo {
      /**
      * Registra uma mensalidade paga
      * @param m , classe a ser inserida
+     * @throws CodigoException caso o código a ser inserido já exista
      */
-    public void adicionaMensalidade(Mensalidade m){
+    public void adicionaMensalidade(Mensalidade m) throws CodigoException{
         try{
-            FileWriter arquivo = new FileWriter("mensalidades.txt",true);
-            BufferedWriter escrever = new BufferedWriter(arquivo);
+            buscaMensalidadeCodigo(m.getCod_aluno());
+        }catch(NaoExisteException ex){
+            try{
+                FileWriter arquivo = new FileWriter("mensalidades.txt",true);
+                BufferedWriter escrever = new BufferedWriter(arquivo);
             
-            String linha = m.getCod_aluno()+";"+m.getValor()+";"+m.getData_pagamento()+";"+m.getData_fim();
-            escrever.write(linha);
+                String linha = m.getCod_aluno()+";"+m.getValor()+";"+m.getData_pagamento()+";"+m.getData_fim();
+                escrever.write(linha);
             
-            escrever.close();
-            arquivo.close();
-        }catch(IOException  e){
-            System.out.println("Erro ao escrever o arquivo");
+                escrever.close();
+                arquivo.close();
+            }catch(IOException  e){
+                System.out.println("Erro ao escrever o arquivo");
+            }
+                System.out.println("Pagamento do aluno Nº "+m.getCod_aluno()+" foi registrado no valor de: "+m.getValor());
         }
-            System.out.println("Pagamento do aluno Nº "+m.getCod_aluno()+" foi registrado no valor de: "+m.getValor());
+        throw new CodigoException("Mensalidade do aluno de código "+m.getCod_aluno()+" não está registrada");
     }
     /**
      * Lista todas as mensalidades pagas no arquivo mensalidades.txt
@@ -89,8 +97,9 @@ public class MensalidadeArquivo {
      * de código especificado
      * @param cod_aluno código a ser procurado
      * @return Mensalidade, classe para futuras operações
+     * @throws NaoExisteException caso não exista mensalidade do aluno com aquele codigo
      */
-    public Mensalidade buscaMensalidadeCodigo(int cod_aluno){
+    public Mensalidade buscaMensalidadeCodigo(int cod_aluno) throws NaoExisteException{
         FileReader arquivo = null;
         BufferedReader br = null;
         try{
@@ -130,6 +139,6 @@ public class MensalidadeArquivo {
                 System.err.println("Erro ao fechar o arquivo");
             }
         }
-        return null;     
+        throw new NaoExisteException("Mensalidade do aluno Nº "+cod_aluno+" não está registrada.");    
      }
 }
