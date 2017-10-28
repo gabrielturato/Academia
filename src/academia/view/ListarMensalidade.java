@@ -5,19 +5,23 @@
  */
 package academia.view;
 
+import javax.swing.JDialog;
+import javax.swing.JTextArea;
+
 /**
  *
  * @author Gabriel
  */
-public class ExcluirAluno extends javax.swing.JFrame {
+public class ListarMensalidade extends javax.swing.JFrame {
 
     /**
-     * Creates new form ExcluirAluno
+     * Creates new form ListarMensalidade
      */
-    public ExcluirAluno() {
+    public ListarMensalidade() {
         initComponents();
            myInitComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,31 +32,41 @@ public class ExcluirAluno extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        excluirBotao = new javax.swing.JButton();
-        codAluno = new javax.swing.JTextField();
+        buscarRadio = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+        buscarBotao = new javax.swing.JButton();
+        codMensalidade = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Excluir Aluno");
+        setTitle("Listar Mensalidade");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 52)); // NOI18N
-        jLabel1.setText("Excluir Aluno");
+        jLabel1.setText("Listar Mensalidade");
 
-        excluirBotao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        excluirBotao.setText("Excluir");
-        excluirBotao.setPreferredSize(new java.awt.Dimension(16, 45));
-        excluirBotao.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(buscarRadio);
+        buscarRadio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buscarRadio.setText("Buscar Um");
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jRadioButton2.setText("Listar todos");
+
+        buscarBotao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        buscarBotao.setText("Buscar");
+        buscarBotao.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirBotaoActionPerformed(evt);
+                buscarBotaoActionPerformed(evt);
             }
         });
 
-        codAluno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        codAluno.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código do Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        codMensalidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        codMensalidade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código da Mensalidade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -60,28 +74,40 @@ public class ExcluirAluno extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(325, 325, 325))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(333, 333, 333)
-                .addComponent(codAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(excluirBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(280, 280, 280)
+                .addComponent(jRadioButton2)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(266, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(262, 262, 262))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(buscarBotao)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(buscarRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(codMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(252, 252, 252))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(89, 89, 89)
+                .addGap(97, 97, 97)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(codAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(excluirBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(319, Short.MAX_VALUE))
+                    .addComponent(codMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(buscarRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jRadioButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(buscarBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(194, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -99,6 +125,40 @@ public class ExcluirAluno extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBotaoActionPerformed
+        int codigo = Integer.parseInt(codMensalidade.getText());
+        if(buscarRadio.isSelected()){
+            buscaMensalidade(codigo);
+        }else{
+            listarTodos();
+        }
+    }//GEN-LAST:event_buscarBotaoActionPerformed
+ private void listarTodos(){
+        JDialog resultado = new JDialog();
+        resultado.setTitle("Listar todos");
+        String dados = "Listar todos as mensalidades aqui";
+        JTextArea areaDados = new JTextArea(dados);
+        areaDados.setEditable(false);
+        resultado.add(areaDados);
+        resultado.setSize(500,500);
+        resultado.setVisible(true);
+    
+    }
+        private void buscaMensalidade(int i){
+        JDialog resultado = new JDialog();
+        resultado.setTitle("Busca mensalidade");
+        String dados = "Listar os dados da mensalidade de codigo " + i + " aqui";
+        JTextArea areaDados = new JTextArea(dados);
+        areaDados.setEditable(false);
+        resultado.add(areaDados);
+        resultado.setSize(500,500);
+        resultado.setVisible(true);
+    
+    }
+    /**
+     * @param args the command line arguments
+     */
+        
 public void myInitComponents() {
     
         jPanel1 = new javax.swing.JPanel();
@@ -119,8 +179,7 @@ public void myInitComponents() {
         inserirEntrada = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-       
-
+        
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -313,19 +372,6 @@ public void myInitComponents() {
       InserirEntrada frame = new InserirEntrada();
       frame.setVisible(true);
     }                                              
-    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
-        // TODO add your handling code here:
-        int codigo = Integer.parseInt(codAluno.getText());
-        //Função que exclui o aluno do codigo passado
-        System.out.println("Excluindo o aluno de codigo " + codigo + ".");
-        excluirAluno(codigo);
-    }//GEN-LAST:event_excluirBotaoActionPerformed
-    private void excluirAluno(int i){
-        //funcao que exclui o aluno
-    }
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -340,24 +386,24 @@ public void myInitComponents() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ListarMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ExcluirAluno().setVisible(true);
+                new ListarMensalidade().setVisible(true);
             }
         });
     }
-  private javax.swing.JMenuItem excluirAluno;
+      private javax.swing.JMenuItem excluirAluno;
     private javax.swing.JMenuItem inserirAluno;
     private javax.swing.JMenuItem inserirEntrada;
     private javax.swing.JMenuItem inserirMensalidade;
@@ -372,11 +418,15 @@ public void myInitComponents() {
     private javax.swing.JMenuItem listarMensalidade;
     private javax.swing.JMenuItem listarTreino;
     private javax.swing.JMenuItem vincularTreino;
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField codAluno;
-    private javax.swing.JButton excluirBotao;
+    private javax.swing.JButton buscarBotao;
+    private javax.swing.JRadioButton buscarRadio;
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JTextField codMensalidade;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

@@ -9,14 +9,14 @@ package academia.view;
  *
  * @author Gabriel
  */
-public class ExcluirAluno extends javax.swing.JFrame {
+public class InserirMensalidade extends javax.swing.JFrame {
 
     /**
-     * Creates new form ExcluirAluno
+     * Creates new form InserirMensalidade
      */
-    public ExcluirAluno() {
+    public InserirMensalidade() {
         initComponents();
-           myInitComponents();
+        myInitComponents();
     }
 
     /**
@@ -31,57 +31,145 @@ public class ExcluirAluno extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        excluirBotao = new javax.swing.JButton();
-        codAluno = new javax.swing.JTextField();
+        codigoMensalidade = new javax.swing.JTextField();
+        diaPagamento = new javax.swing.JComboBox<>();
+        mesPagamento = new javax.swing.JComboBox<>();
+        anoPagamento = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        inserirBotao = new javax.swing.JButton();
+        diaVencimento = new javax.swing.JComboBox<>();
+        mesVencimento = new javax.swing.JComboBox<>();
+        anoVencimento = new javax.swing.JComboBox<>();
+        valorMensalidade = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Excluir Aluno");
+        setTitle("Inserir Mensalidade");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 52)); // NOI18N
-        jLabel1.setText("Excluir Aluno");
+        jLabel1.setText("Inserir Mensalidade");
 
-        excluirBotao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        excluirBotao.setText("Excluir");
-        excluirBotao.setPreferredSize(new java.awt.Dimension(16, 45));
-        excluirBotao.addActionListener(new java.awt.event.ActionListener() {
+        codigoMensalidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        codigoMensalidade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código da Mensalidade", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        diaPagamento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        diaPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", " " }));
+        diaPagamento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                excluirBotaoActionPerformed(evt);
+                diaPagamentoActionPerformed(evt);
             }
         });
 
-        codAluno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        codAluno.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código do Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        mesPagamento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mesPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+
+        anoPagamento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        anoPagamento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957", "1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010" }));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel2.setText("Data de Pagamento");
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setText("Data de Vencimento");
+        jLabel3.setToolTipText("");
+
+        inserirBotao.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        inserirBotao.setText("Inserir");
+        inserirBotao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                inserirBotaoActionPerformed(evt);
+            }
+        });
+
+        diaVencimento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        diaVencimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", " " }));
+        diaVencimento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                diaVencimentoActionPerformed(evt);
+            }
+        });
+
+        mesVencimento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        mesVencimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" }));
+
+        anoVencimento.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        anoVencimento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1950", "1951", "1952", "1953", "1954", "1955", "1956", "1957", "1958", "1959", "1960", "1961", "1962", "1963", "1964", "1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010" }));
+
+        valorMensalidade.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        valorMensalidade.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Valor", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(329, Short.MAX_VALUE)
+                .addContainerGap(255, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(325, 325, 325))
+                .addGap(249, 249, 249))
+            .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(333, 333, 333)
-                .addComponent(codAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
-                .addComponent(excluirBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(296, 296, 296)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(codigoMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(valorMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(inserirBotao)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(diaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(mesPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(16, 16, 16)
+                            .addComponent(anoPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(diaVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(mesVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(16, 16, 16)
+                                .addComponent(anoVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(89, 89, 89)
+                .addGap(77, 77, 77)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(codAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(excluirBotao, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(319, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(diaPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mesPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(anoPagamento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(codigoMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(diaVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(mesVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(anoVencimento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(37, 37, 37)
+                        .addComponent(valorMensalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(24, 24, 24)
+                .addComponent(inserirBotao)
+                .addContainerGap(138, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -99,7 +187,43 @@ public class ExcluirAluno extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-public void myInitComponents() {
+    private void diaPagamentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaPagamentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_diaPagamentoActionPerformed
+
+    private void diaVencimentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaVencimentoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_diaVencimentoActionPerformed
+
+    private void inserirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inserirBotaoActionPerformed
+      
+      int valor = Integer.parseInt(valorMensalidade.getText());
+      int codigo = Integer.parseInt(codigoMensalidade.getText());
+      //Pagamento
+       String diaString = diaPagamento.getSelectedItem().toString();
+        int diaPag = Integer.parseInt(diaString);
+        String mesString = mesPagamento.getSelectedItem().toString();
+        int mesPag = Integer.parseInt(mesString);
+        String anoString = anoPagamento.getSelectedItem().toString();
+        int anoPag = Integer.parseInt(anoString);
+      //Vencimento
+        String diaString1 = diaVencimento.getSelectedItem().toString();
+        int diaVenc = Integer.parseInt(diaString1);
+        String mesString1 = mesVencimento.getSelectedItem().toString();
+        int mesVenc = Integer.parseInt(mesString1);
+        String anoString1 = anoVencimento.getSelectedItem().toString();
+        int anoVenc = Integer.parseInt(anoString1);
+        
+     inserirMensalidade(valor,codigo,diaPag,mesPag,anoPag,diaVenc,mesVenc,anoVenc);
+    }//GEN-LAST:event_inserirBotaoActionPerformed
+    private void inserirMensalidade(int valor, int codigo, int diaPag,int mesPag, int anoPag, int diaVenc, int mesVenc, int anoVenc){
+    //Inserir
+    System.out.println("Mensalidade inserida com sucesso!");
+    }
+    /**
+     * @param args the command line arguments
+     */
+    public void myInitComponents() {
     
         jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -119,8 +243,7 @@ public void myInitComponents() {
         inserirEntrada = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-       
-
+     
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -312,20 +435,7 @@ public void myInitComponents() {
       dispose();
       InserirEntrada frame = new InserirEntrada();
       frame.setVisible(true);
-    }                                              
-    private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
-        // TODO add your handling code here:
-        int codigo = Integer.parseInt(codAluno.getText());
-        //Função que exclui o aluno do codigo passado
-        System.out.println("Excluindo o aluno de codigo " + codigo + ".");
-        excluirAluno(codigo);
-    }//GEN-LAST:event_excluirBotaoActionPerformed
-    private void excluirAluno(int i){
-        //funcao que exclui o aluno
-    }
-    /**
-     * @param args the command line arguments
-     */
+    }                   
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -340,20 +450,20 @@ public void myInitComponents() {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ExcluirAluno.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(InserirMensalidade.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ExcluirAluno().setVisible(true);
+                new InserirMensalidade().setVisible(true);
             }
         });
     }
@@ -373,10 +483,19 @@ public void myInitComponents() {
     private javax.swing.JMenuItem listarTreino;
     private javax.swing.JMenuItem vincularTreino;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField codAluno;
-    private javax.swing.JButton excluirBotao;
+    private javax.swing.JComboBox<String> anoPagamento;
+    private javax.swing.JComboBox<String> anoVencimento;
+    private javax.swing.JTextField codigoMensalidade;
+    private javax.swing.JComboBox<String> diaPagamento;
+    private javax.swing.JComboBox<String> diaVencimento;
+    private javax.swing.JButton inserirBotao;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JComboBox<String> mesPagamento;
+    private javax.swing.JComboBox<String> mesVencimento;
+    private javax.swing.JTextField valorMensalidade;
     // End of variables declaration//GEN-END:variables
 }

@@ -20,7 +20,7 @@ public class InserirAluno extends javax.swing.JFrame {
     }
 public void myInitComponents() {
     
-
+        jPanel1 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         listarAluno = new javax.swing.JMenuItem();
@@ -38,8 +38,19 @@ public void myInitComponents() {
         inserirEntrada = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Inserir Aluno");
-        setPreferredSize(new java.awt.Dimension(950, 540));
+       
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 950, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 529, Short.MAX_VALUE)
+        );
 
         jMenu1.setText("Alunos");
 
@@ -143,58 +154,84 @@ public void myInitComponents() {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 944, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 522, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
+    
     }// </editor-fold>                        
-
-    private void inserirAlunoActionPerformed(java.awt.event.ActionEvent evt) {                                             
+ private void inserirAlunoActionPerformed(java.awt.event.ActionEvent evt) {                                             
         //Inserir Alunos
+        dispose();
         InserirAluno frame = new InserirAluno();
         frame.setVisible(true);
     }                                            
 
     private void listarAlunoActionPerformed(java.awt.event.ActionEvent evt) {                                            
         // TODO add your handling code here:
+        dispose();
+        ListarAluno frame = new ListarAluno();
+        frame.setVisible(true);
     }                                           
 
     private void excluirAlunoActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
+        dispose();
+        ExcluirAluno frame = new ExcluirAluno();
+        frame.setVisible(true);
     }                                            
 
     private void vincularTreinoActionPerformed(java.awt.event.ActionEvent evt) {                                               
-        // TODO add your handling code here:
+        dispose();
+        VincularTreinoAluno frame = new VincularTreinoAluno();
+        frame.setVisible(true);
     }                                              
 
     private void inserirTreinoActionPerformed(java.awt.event.ActionEvent evt) {                                              
-        // TODO add your handling code here:
+        dispose();
+        InserirTreino frame = new InserirTreino();
+        frame.setVisible(true);
     }                                             
 
     private void listarTreinoActionPerformed(java.awt.event.ActionEvent evt) {                                             
         // TODO add your handling code here:
+        dispose();
+        ListarTreino frame = new ListarTreino();
+        frame.setVisible(true);
     }                                            
 
     private void listarMensalidadeActionPerformed(java.awt.event.ActionEvent evt) {                                                  
-        // TODO add your handling code here:
+        dispose();
+        ListarMensalidade frame = new ListarMensalidade();
+        frame.setVisible(true);
     }                                                 
 
     private void inserirMensalidadeActionPerformed(java.awt.event.ActionEvent evt) {                                                   
         // TODO add your handling code here:
+        dispose();
+        InserirMensalidade frame = new InserirMensalidade();
+        frame.setVisible(true);
     }                                                  
 
     private void listarEntradaActionPerformed(java.awt.event.ActionEvent evt) {                                              
         // TODO add your handling code here:
+        dispose();
+        ListarEntrada frame = new ListarEntrada();
+        frame.setVisible(true);
     }                                             
 
     private void inserirEntradaActionPerformed(java.awt.event.ActionEvent evt) {                                               
         // TODO add your handling code here:
+      dispose();
+      InserirEntrada frame = new InserirEntrada();
+      frame.setVisible(true);
     }                                              
+                   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -219,9 +256,10 @@ public void myInitComponents() {
         rgAluno = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(950, 540));
+        setTitle("Inserir Aluno");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setPreferredSize(new java.awt.Dimension(950, 550));
 
         nomeAluno.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Nome do Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
         nomeAluno.addActionListener(new java.awt.event.ActionListener() {
@@ -374,7 +412,7 @@ public void myInitComponents() {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 553, Short.MAX_VALUE)
         );
 
         pack();
@@ -466,7 +504,7 @@ public void myInitComponents() {
             }
         });
     }
- private javax.swing.JMenuItem excluirAluno;
+    private javax.swing.JMenuItem excluirAluno;
     private javax.swing.JMenuItem inserirAluno;
     private javax.swing.JMenuItem inserirEntrada;
     private javax.swing.JMenuItem inserirMensalidade;
