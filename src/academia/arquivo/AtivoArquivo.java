@@ -17,6 +17,7 @@ import static java.lang.Integer.parseInt;
 import static java.time.LocalDate.parse;
 import academia.exceptions.CodigoException;
 import academia.exceptions.NaoExisteException;
+import java.util.ArrayList;
 
 /**
  * Classe responsável por fazer operações com
@@ -84,7 +85,7 @@ public class AtivoArquivo {
      * de aluno já exista, não permite cadastrar
      * novamente
      */
-     public void adicionaAtivo(Ativo a) throws CodigoException{
+     public boolean adicionaAtivo(Ativo a) throws CodigoException{
         try{
             buscaAtivoCodigo(a.getCod_aluno());
             }catch(NaoExisteException ex){    
@@ -101,8 +102,9 @@ public class AtivoArquivo {
                     System.err.println("Erro ao escrever o arquivo");
                 }
                 System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
+                return true;
             }
-            throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
+        throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
     }
      /**
       * Lista todos os alunos ativos
@@ -192,4 +194,21 @@ public class AtivoArquivo {
         }
         throw new NaoExisteException("O aluno chamado "+nome+" não está registrado");     
      }
+    
+    public void excluiAtivo(int cod_aluno){
+        File file= new File("alunos_ativos.txt");
+        try{
+            FileReader fr = new FileReader(file);
+            BufferedReader br = new BufferedReader(fr);
+            
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            
+            String linha = br.readLine();
+            String palavras[];
+        }catch(IOException ex){
+            
+        }
+        
+    }
 }

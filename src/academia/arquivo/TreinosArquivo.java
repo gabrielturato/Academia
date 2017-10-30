@@ -29,7 +29,7 @@ public class TreinosArquivo {
      * @param t, classe Treinos a ser inserida
      * @throws CodigoException caso o código a ser inserido já exista
      */
-    public void adicionaTreino(Treinos t) throws CodigoException{
+    public boolean adicionaTreino(Treinos t) throws CodigoException{
         try{
             buscaTreinoCodigo(t.getCod_treino());
         }catch(NaoExisteException ex){
@@ -42,8 +42,10 @@ public class TreinosArquivo {
             
                 escrever.close();
                 arquivo.close();
+                return true;
             }catch(IOException  e){
                 System.out.println("Erro ao escrever o arquivo");
+                return true;    
             }
         }
         throw new CodigoException("O treino de código "+t.getCod_treino()+" já está registrado");

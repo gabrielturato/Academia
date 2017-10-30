@@ -33,7 +33,7 @@ public class MensalidadeArquivo {
      * @param m , classe a ser inserida
      * @throws CodigoException caso o código a ser inserido já exista
      */
-    public void adicionaMensalidade(Mensalidade m) throws CodigoException{
+    public boolean adicionaMensalidade(Mensalidade m) throws CodigoException{
         try{
             buscaMensalidadeCodigo(m.getCod_aluno());
         }catch(NaoExisteException ex){
@@ -50,6 +50,7 @@ public class MensalidadeArquivo {
                 System.out.println("Erro ao escrever o arquivo");
             }
                 System.out.println("Pagamento do aluno Nº "+m.getCod_aluno()+" foi registrado no valor de: "+m.getValor());
+                return true;
         }
         throw new CodigoException("Mensalidade do aluno de código "+m.getCod_aluno()+" não está registrada");
     }
