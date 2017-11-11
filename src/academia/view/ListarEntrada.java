@@ -5,7 +5,17 @@
  */
 package academia.view;
 
+import academia.arquivo.AtivoArquivo;
+import academia.arquivo.CatracaArquivo;
+import academia.bean.Ativo;
+import academia.bean.Catraca;
+import academia.bean.Mensalidade;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -13,7 +23,9 @@ import javax.swing.JTextArea;
  * @author Gabriel
  */
 public class ListarEntrada extends javax.swing.JFrame {
-
+    private final Log log = new Log();
+    private final CatracaArquivo arquivoEntrada = new CatracaArquivo();
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
     /**
      * Creates new form ListarEntrada
      */
@@ -341,37 +353,92 @@ public void myInitComponents() {
 
     private void buscarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBotaoActionPerformed
           if(buscarRadio.isSelected()){
-            int codigo = Integer.parseInt(codEntrada.getText());
-            //Funcao de busca por código
-            //busca(codigo);
-            System.out.println("Fazendo busca por entrada de código :" + 1);
-            buscaEntrada(codigo);
+            try{
+                int codigo = Integer.parseInt(codEntrada.getText());
+                Catraca entrada;
+                try {
+                        entrada=arquivoEntrada.buscaEntradaCodigo(codigo);
+                        buscaEntrada(entrada);
+                    }catch(NaoExisteException ex){
+                        log.getLogger().log(Level.SEVERE, ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Não existe uma mensalidade com esse código !");
+                        codEntrada.setText("");
+                    }
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                codEntrada.setText("");
+            }
         }else{
-            //função Listar Todos
-            listarTodos();
-            
+            ArrayList<Catraca> entradas;
+            try{
+                entradas = arquivoEntrada.listaEntradas();
+                listarTodos(entradas);
+            }catch(NaoExisteException ex){
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Não tem nenhuma entrada cadastrada !");
+                codEntrada.setText("");
+            }
         }
     }//GEN-LAST:event_buscarBotaoActionPerformed
-  private void listarTodos(){
+  private void listarTodos(ArrayList<Catraca> entradas){
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
-        String dados = "Listar todos as entradas aqui";
-        JTextArea areaDados = new JTextArea(dados);
+        StringBuilder TodosDados = new StringBuilder();
+        Ativo aluno;
+        Catraca entrada;
+        for (int i = 0; i < entradas.size(); i++) {
+            try{
+                entrada=entradas.get(i);
+                aluno=arquivoAtivo.buscaAtivoCodigo(entrada.getCod_aluno());
+                if(i==0){
+                    String dados = " Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
+                    TodosDados.append(dados);
+                }else{
+                    String dados = "\n\n Entrada Nº "+i+" Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
+                    TodosDados.append(dados);
+                }
+            }catch(NaoExisteException ex){
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                entrada=entradas.get(i);
+                if(i==0){
+                    String dados = " Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
+                    TodosDados.append(dados);
+                }else{
+                    String dados = "\n\n Entrada Nº "+i+" Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
+                    TodosDados.append(dados);
+                }
+            }
+            
+        }
+        JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);
         resultado.setVisible(true);
     
     }
-        private void buscaEntrada(int i){
+        private void buscaEntrada(Catraca entrada){
         JDialog resultado = new JDialog();
-        resultado.setTitle("Busca aluno");
-        String dados = "Listar os dados da entrada de codigo " + i + " aqui";
-        JTextArea areaDados = new JTextArea(dados);
-        areaDados.setEditable(false);
-        resultado.add(areaDados);
-        resultado.setSize(500,500);
-        resultado.setVisible(true);
+        resultado.setTitle("Busca entrada");
+        Ativo aluno;
+        try{
+            aluno=arquivoAtivo.buscaAtivoCodigo(entrada.getCod_aluno());
+            String dados = " Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
+            JTextArea areaDados = new JTextArea(dados);
+            areaDados.setEditable(false);
+            resultado.add(areaDados);
+            resultado.setSize(500,500);
+            resultado.setVisible(true);
+        }catch(NaoExisteException ex){
+            log.getLogger().log(Level.SEVERE, ex.getMessage());
+            String dados = " Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
+            JTextArea areaDados = new JTextArea(dados);
+            areaDados.setEditable(false);
+            resultado.add(areaDados);
+            resultado.setSize(500,500);
+            resultado.setVisible(true);
+            codEntrada.setText("");
+        }
     
     }
     /**

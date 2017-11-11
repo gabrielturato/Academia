@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Turato
  */
 public class ListaTreinos {
-    private ArrayList<Treinos> treinos;    
+    private ArrayList<Treinos> treinos = new ArrayList();    
     
     /**
      * Lista de toda os alunos ListaAtivos

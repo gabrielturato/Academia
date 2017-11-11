@@ -5,12 +5,18 @@
  */
 package academia.view;
 
+import academia.arquivo.TreinosArquivo;
+import academia.exceptions.Log;
+import academia.bean.Treinos;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel
  */
 public class InserirTreino extends javax.swing.JFrame {
-
+    private final TreinosArquivo arquivoTreino = new TreinosArquivo();
+    private final Log log = new Log();
     /**
      * Creates new form InserirTreino
      */
@@ -245,7 +251,6 @@ public void myInitComponents() {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        codTreino = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         descricaoTreino = new javax.swing.JTextArea();
         botaoEnviar = new javax.swing.JButton();
@@ -257,9 +262,6 @@ public void myInitComponents() {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 52)); // NOI18N
         jLabel1.setText("Inserir Treino");
-
-        codTreino.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        codTreino.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código do Treino", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         descricaoTreino.setColumns(20);
         descricaoTreino.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -288,9 +290,7 @@ public void myInitComponents() {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(botaoEnviar)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
-                        .addComponent(codTreino)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(316, 316, 316))
         );
         jPanel1Layout.setVerticalGroup(
@@ -300,9 +300,7 @@ public void myInitComponents() {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(codTreino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(69, 69, 69)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(botaoEnviar)
@@ -325,13 +323,23 @@ public void myInitComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoEnviarActionPerformed
-        // TODO add your handling code here:
-        String descricao = descricaoTreino.getText();
-        int codigo = Integer.parseInt(codTreino.getText());
-        
-        //Funcao que salva o treino no arquivo
-        System.out.println("Código do treino : " + codigo );
-        System.out.println("Descrição do treino : " + descricao );
+        if(descricaoTreino.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Preencha o campo de descrição !");
+        }
+        else{
+            //Funcao que salva o treino no arquivo
+            String descricao = descricaoTreino.getText();
+            Treinos treino = new Treinos();
+            treino.setDescricao(descricao);
+            boolean sucesso=arquivoTreino.adicionaTreino(treino);
+             if(sucesso==true){
+                JOptionPane.showMessageDialog(null, "Treino registrado !");
+                descricaoTreino.setText("");
+            }else{
+                JOptionPane.showMessageDialog(null, "Não foi possível registrar o treino !");
+                descricaoTreino.setText("");
+            }
+        }        
     }//GEN-LAST:event_botaoEnviarActionPerformed
 
     /**
@@ -385,7 +393,6 @@ public void myInitComponents() {
     private javax.swing.JMenuItem vincularTreino;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoEnviar;
-    private javax.swing.JTextField codTreino;
     private javax.swing.JTextArea descricaoTreino;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -30,9 +30,11 @@ public class Operacoes {
             oos.close();
             arquivo.close();
         }catch(FileNotFoundException e){
-            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);   
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e); 
+            return false;
         }catch(IOException e){
             log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
         }
         return true;
     }
@@ -63,9 +65,11 @@ public class Operacoes {
             oos.close();
             arquivo.close();
         }catch(FileNotFoundException e){
-            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);   
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);
+            return false;
         }catch(IOException e){
             log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
         }
         return true;
     }
@@ -96,9 +100,11 @@ public class Operacoes {
             oos.close();
             arquivo.close();
         }catch(FileNotFoundException e){
-            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);   
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);
+            return false;
         }catch(IOException e){
             log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
         }
         return true;
     }
@@ -129,9 +135,11 @@ public class Operacoes {
             oos.close();
             arquivo.close();
         }catch(FileNotFoundException e){
-            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);   
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);
+            return false;
         }catch(IOException e){
             log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
         }
         return true;
     }
@@ -162,9 +170,11 @@ public class Operacoes {
             oos.close();
             arquivo.close();
         }catch(FileNotFoundException e){
-            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);   
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e); 
+            return false;
         }catch(IOException e){
             log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
         }
         return true;
     }
@@ -176,6 +186,41 @@ public class Operacoes {
                 ObjectInputStream oos = new ObjectInputStream(arquivo);
                 ArrayList<Treinos> treinos = (ArrayList<Treinos>) oos.readObject();
                 return treinos;
+            }catch(FileNotFoundException e){
+                log.getLogger().log(Level.SEVERE, "Não foi possível ler a lista, documento inexistente", e);   
+            }catch(IOException e){
+                log.getLogger().log(Level.SEVERE, "Não foi possível ler a lista", e);
+            }catch(ClassNotFoundException e){
+                log.getLogger().log(Level.SEVERE, "Não foi possível ler a lista", e);
+            }
+        }
+        return null;
+    }
+    
+    public boolean salvarListaAlunoTreino(String caminho,ArrayList<AlunoTreino> vinculo){
+        try {
+            FileOutputStream arquivo = new FileOutputStream(caminho);
+            ObjectOutputStream oos = new ObjectOutputStream(arquivo);
+            oos.writeObject(vinculo);
+            oos.close();
+            arquivo.close();
+        }catch(FileNotFoundException e){
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista, documento inexistente", e);
+            return false;
+        }catch(IOException e){
+            log.getLogger().log(Level.SEVERE, "Não foi possível salvar a lista", e);
+            return false;
+        }
+        return true;
+    }
+
+        public ArrayList<AlunoTreino> lerListaAlunoTreino(String caminho){
+        if(new File(caminho).canRead()==true){
+            try{
+                FileInputStream arquivo = new FileInputStream(caminho);
+                ObjectInputStream oos = new ObjectInputStream(arquivo);
+                ArrayList<AlunoTreino> vinculos = (ArrayList<AlunoTreino>) oos.readObject();
+                return vinculos;
             }catch(FileNotFoundException e){
                 log.getLogger().log(Level.SEVERE, "Não foi possível ler a lista, documento inexistente", e);   
             }catch(IOException e){

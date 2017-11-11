@@ -25,20 +25,24 @@ public class MensalidadeArquivo {
      * Registra uma mensalidade paga
      * @param m , classe a ser inserida
      */
-    public void adicionaMensalidade(Mensalidade m){
+    public boolean adicionaMensalidade(Mensalidade m){
         mensalidades=operar.lerListaMensalidade("mensalidades.txt");
-        ListaMensalidades.setMensalidades(mensalidades);
-        ListaMensalidades.adicionaMensalidade(m);
-        mensalidades=ListaMensalidades.getMensalidades();
-        boolean sucesso=operar.salvarListaMensalidade("mensalidades.txt", mensalidades);
-        if(sucesso==true){
-            System.out.println("Mensalidade inserida com sucesso !");
+        if(mensalidades==null){
+            ListaMensalidades.adicionaMensalidade(m);
+            mensalidades=ListaMensalidades.getMensalidades();
+            boolean sucesso=operar.salvarListaMensalidade("mensalidades.txt", mensalidades);
+            return sucesso;
         }else{
-            System.out.println("Não foi possível inserir a mensalidade !");
-        }  
+            ListaMensalidades.setMensalidades(mensalidades);
+            ListaMensalidades.adicionaMensalidade(m);
+            mensalidades=ListaMensalidades.getMensalidades();
+            boolean sucesso=operar.salvarListaMensalidade("mensalidades.txt", mensalidades);
+            return sucesso;
+        }
     }
     /**
      * Lista todas as mensalidades pagas no arquivo mensalidades.txt
+     * @return ArrayList<Mensalidade> Lista de mensalidades existentes
      * @throws NaoExisteException caso não exista nenhuma mensalidade no arquivo
      */
     public ArrayList<Mensalidade> listaMensalidades() throws NaoExisteException{

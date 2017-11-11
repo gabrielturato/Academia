@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 package academia.bean;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 /**
  * Classe que registra a entrada de alunos
  * @author Turato
  */
-public class Catraca {
-    private final LocalDate data_entrada;
+public class Catraca implements java.io.Serializable {
+    private final LocalDateTime data_entrada;
     private int cod_aluno;    
     /**
      * Construtor da classe Catraca
      * @param data_entrada data em que foi registrada a entrada
      */
-    public Catraca(LocalDate data_entrada) {
+    public Catraca(LocalDateTime data_entrada) {
         this.data_entrada = data_entrada;
     }
     
@@ -43,7 +43,7 @@ public class Catraca {
      *
      * @return the value of data_entrada
      */
-    public LocalDate getData_entrada() {
+    public LocalDateTime getData_entrada() {
         return data_entrada;
     }
     

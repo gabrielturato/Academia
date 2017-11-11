@@ -7,16 +7,23 @@ package academia.view;
 import javax.swing.JTextArea;
 import javax.swing.JDialog;
 import academia.arquivo.AtivoArquivo;
+import academia.arquivo.InativoArquivo;
 import academia.bean.Ativo;
+import academia.bean.Inativo;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Gabriel
  */
 public class ListarAluno extends javax.swing.JFrame {
-
+    private final Log log = new Log();
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    private final InativoArquivo arquivoInativo = new InativoArquivo();
     /**
      * Creates new form ListarAluno
      */
@@ -361,19 +368,43 @@ public void myInitComponents() {
     private void buscaBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaBotaoActionPerformed
         // Ação do botão
         if(buscaAlunoRadio.isSelected()){
-            int codigo = Integer.parseInt(codigoAluno.getText());
-            //Funcao de busca por código
-            //busca(codigo);
-            System.out.println("Fazendo busca por aluno de código :" + 1);
-            buscaAluno(codigo);
+            if(codigoAluno.getText().equals("")){
+                JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
+            }else{
+                try{
+                    int codigo = Integer.parseInt(codigoAluno.getText());
+                    Ativo AlunoAtivo = new Ativo(); 
+                    try {
+                        AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(codigo);
+                        buscaAluno(AlunoAtivo);
+                    }catch(NaoExisteException ex){
+                        log.getLogger().log(Level.SEVERE, ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Não existe um aluno com esse código !");
+                        codigoAluno.setText("");
+                    }
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                    codigoAluno.setText("");
+                }
+            }
         }else{
             //função Listar Todos
-            listarTodos();
+            ArrayList<Ativo> alunos;
+            ArrayList<Inativo> inativos;
+            try {
+                alunos = arquivoAtivo.listaAtivo();
+                inativos = arquivoInativo.listaInativo();
+                listarTodos(alunos,inativos);
+            } catch (NaoExisteException ex) {
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Não tem nenhum aluno cadastrado !");
+                codigoAluno.setText("");
+            }
             
         }
         
     }//GEN-LAST:event_buscaBotaoActionPerformed
-    private void listarTodos(){
+    private void listarTodos(ArrayList<Ativo> alunos,ArrayList<Inativo> inativos){
         /*
         ArrayList<Ativo> listas = new ArrayList();
         AtivoArquivo arquivo = new AtivoArquivo();
@@ -381,24 +412,43 @@ public void myInitComponents() {
         */
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
-        String dados = "Listar todos os alunos aqui";
-        JTextArea areaDados = new JTextArea(dados);   
+        StringBuilder TodosDados = new StringBuilder();
+        Ativo AlunoAtivo;
+        Inativo AlunoInativo;
+        for (int i = 0; i < alunos.size(); i++) {
+            AlunoAtivo = alunos.get(i);
+            if(i==0){
+                String dados = " Aluno Nº "+i+"\n Nome: "+AlunoAtivo.getNome()+"\n Endereço: "+AlunoAtivo.getEndereco()+"\n RG: "+AlunoAtivo.getRG()+"\n Telefone: "+AlunoAtivo.getTelefone()+"\n Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc())+"\n";
+                TodosDados.append(dados);
+            }else{
+                String dados = "\n\n Aluno Nº"+i+"\n Nome: "+AlunoAtivo.getNome()+"\n Endereço: "+AlunoAtivo.getEndereco()+"\n RG: "+AlunoAtivo.getRG()+"\n Telefone: "+AlunoAtivo.getTelefone()+"\n Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc())+"\n";
+                TodosDados.append(dados);
+            }
+            AlunoInativo = inativos.get(i);
+            if(i==0){
+                String dados = "------------------------Alunos Invalidados----------------------------"+"\n Nome: "+AlunoInativo.getNome()+"\n Endereço: "+AlunoInativo.getEndereco()+"\n RG: "+AlunoInativo.getRG()+"\n Telefone: "+AlunoInativo.getTelefone()+"\n Idade: "+AlunoInativo.descobreIdade(AlunoInativo.getData_nasc());
+                TodosDados.append(dados);
+            }else{
+                String dados = "\n\n Nome: "+AlunoInativo.getNome()+"\n Endereço: "+AlunoInativo.getEndereco()+"\n RG: "+AlunoInativo.getRG()+"\n Telefone: "+AlunoInativo.getTelefone()+"\n Idade: "+AlunoInativo.descobreIdade(AlunoInativo.getData_nasc());
+                TodosDados.append(dados);
+            }
+        }
+        JTextArea areaDados = new JTextArea(TodosDados.toString());   
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);
         resultado.setVisible(true);
     
     }
-        private void buscaAluno(int i){
+    private void buscaAluno(Ativo AlunoAtivo){
         JDialog resultado = new JDialog();
         resultado.setTitle("Busca aluno");
-        String dados = "Listar os dados do aluno de codigo " + i + " aqui";
+        String dados = " Nome: "+AlunoAtivo.getNome()+"\n Endereço: "+AlunoAtivo.getEndereco()+"\n RG: "+AlunoAtivo.getRG()+"\n Telefone: "+AlunoAtivo.getTelefone()+"\n Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc());
         JTextArea areaDados = new JTextArea(dados);
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);
         resultado.setVisible(true);
-    
     }
     /**
      * @param args the command line arguments

@@ -8,9 +8,14 @@ package academia.bean;
  * Classe que registra treinos
  * @author Turato
  */
-public class Treinos {
-    private int cod_treino;
+public class Treinos implements java.io.Serializable{
     private String descricao;
+    /*
+    * Construtor padrão
+    */
+    public Treinos() {
+        
+    }
     
     /**
      * Get the value of descricao
@@ -27,34 +32,5 @@ public class Treinos {
      */
     public void setDescricao(String descricao) {
         this.descricao = descricao;
-    }
-
-    public Treinos() {
-        
-    }
-    
-    /**
-     * Get the value of codigo
-     *
-     * @return the value of cod_treino
-     */
-    public int getCod_treino() {
-        return cod_treino;
-    }
-
-    /**
-     * Set the value of cod_treino
-     * 
-     * @param cod_treino new value of cod_treino 
-     */
-    public void setCod_treino(int cod_treino) {
-        this.cod_treino = cod_treino;
-    }
-    
-    
-    
-    public boolean cadastrarTreino(String descricao){
-     this.descricao = descricao;
-     return true;
     }
 }

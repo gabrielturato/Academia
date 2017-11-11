@@ -5,12 +5,23 @@
  */
 package academia.view;
 
+import academia.arquivo.AtivoArquivo;
+import academia.arquivo.InativoArquivo;
+import academia.bean.Inativo;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel
  */
 public class ExcluirAluno extends javax.swing.JFrame {
-
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    private final Log log = new Log();
+    private final InativoArquivo arquivoInativo = new InativoArquivo();
     /**
      * Creates new form ExcluirAluno
      */
@@ -315,13 +326,43 @@ public void myInitComponents() {
     }                                              
     private void excluirBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_excluirBotaoActionPerformed
         // TODO add your handling code here:
-        int codigo = Integer.parseInt(codAluno.getText());
-        //Função que exclui o aluno do codigo passado
-        System.out.println("Excluindo o aluno de codigo " + codigo + ".");
-        excluirAluno(codigo);
+        if(codAluno.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
+        }else{
+            try{
+                int codigo = Integer.parseInt(codAluno.getText());
+                int p=JOptionPane.showConfirmDialog(null,"Você tem certeza ?","Confirmação",JOptionPane.YES_NO_OPTION);
+                if(p==0){
+                    //Função que exclui o aluno do codigo passado
+                    boolean sucesso=excluirAluno(codigo);
+                    if(sucesso==true){
+                        JOptionPane.showMessageDialog(null, "Aluno excluído com sucesso !");
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Não foi possível excluir o aluno !");
+                    }
+                    codAluno.setText("");
+                }else{
+                    codAluno.setText("");
+                } 
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                codAluno.setText("");
+            }
+        }
     }//GEN-LAST:event_excluirBotaoActionPerformed
-    private void excluirAluno(int i){
-        //funcao que exclui o aluno
+    private boolean excluirAluno(int i){
+        Inativo AlunoInativo;
+        boolean sucesso=false;
+        try {
+            AlunoInativo=arquivoAtivo.transformaInativo(i);
+            arquivoInativo.adicionaInativo(AlunoInativo);
+            sucesso=arquivoAtivo.deletaAtivoCodigo(i);
+            return sucesso;
+        } catch (NaoExisteException ex) {
+            log.getLogger().log(Level.SEVERE, ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Não tem nenhum aluno cadastrado !");
+        }
+        return sucesso;
     }
     /**
      * @param args the command line arguments

@@ -5,6 +5,16 @@
  */
 package academia.view;
 
+import academia.arquivo.AtivoArquivo;
+import academia.arquivo.CatracaArquivo;
+import academia.bean.Ativo;
+import academia.bean.Catraca;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -14,7 +24,10 @@ import javax.swing.JTextArea;
  * @author Gabriel
  */
 public class InserirEntrada extends javax.swing.JFrame {
-
+    
+    private final CatracaArquivo arquivoCatraca = new CatracaArquivo();
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    private final Log log = new Log();
     /**
      * Creates new form InserirEntrada
      */
@@ -325,12 +338,35 @@ public void myInitComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
-    if(codAluno.getText().equals("")){
-        JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
-    }else{
-         //int codigo = Integer.parseInt(codAluno.getText());        // TODO add your handling code here:
-        //inserirEntrada(codigo);
-    }
+        if(codAluno.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
+        }else{
+            try {
+                int codigo = Integer.parseInt(codAluno.getText());
+                Catraca entrada = new Catraca(LocalDateTime.now());
+                entrada.setCod_aluno(codigo);
+                try {
+                    Ativo aluno=arquivoAtivo.buscaAtivoCodigo(codigo);
+                    if(aluno!=null){
+                        boolean sucesso=arquivoCatraca.adicionaEntrada(entrada);
+                        if(sucesso==true){
+                            JOptionPane.showMessageDialog(null, "Entrada registrada !");
+                            codAluno.setText("");
+                        }else{
+                            JOptionPane.showMessageDialog(null, "Não foi possível registrar entrada !");
+                            codAluno.setText("");
+                        }
+                    }
+                } catch (NaoExisteException ex) {
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Não existe um aluno com esse código !");
+                    codAluno.setText("");
+                }
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                codAluno.setText("");
+            }
+        }
     }//GEN-LAST:event_botaoInserirActionPerformed
 
     private void codAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codAlunoActionPerformed

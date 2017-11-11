@@ -5,7 +5,14 @@
  */
 package academia.view;
 
+import academia.arquivo.TreinosArquivo;
+import academia.bean.Treinos;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -13,7 +20,8 @@ import javax.swing.JTextArea;
  * @author Gabriel
  */
 public class ListarTreino extends javax.swing.JFrame {
-
+    private final Log log = new Log();
+    private final TreinosArquivo arquivoTreino = new TreinosArquivo();
     /**
      * Creates new form ListarTreino
      */
@@ -340,36 +348,69 @@ public void myInitComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoBuscarActionPerformed
-     if(botaoBusca.isSelected()){
-            int codigo = Integer.parseInt(codTreino.getText());
-            //Funcao de busca por código
-            //busca(codigo);
-            System.out.println("Fazendo busca por treino de código :" + 1);
-            buscaTreino(codigo);
+        if(botaoBusca.isSelected()){
+            if(codTreino.getText().equals("")){
+                JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
+            }else{
+                try{
+                    int codigo = Integer.parseInt(codTreino.getText());
+                    Treinos treino;
+                    try {
+                        treino=arquivoTreino.buscaTreinoCodigo(codigo);
+                        buscaTreino(treino);
+                    }catch(NaoExisteException ex){
+                        log.getLogger().log(Level.SEVERE, ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Não existe um treino com esse código !");
+                        codTreino.setText("");
+                    }
+                }catch(NumberFormatException ex){
+                    JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                    codTreino.setText("");
+                }
+            }
         }else{
             //função Listar Todos
-            listarTodos();
+            ArrayList<Treinos> treinos;
+            try {
+                treinos = arquivoTreino.listaTreinos();
+                listarTodos(treinos);
+            } catch (NaoExisteException ex) {
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Não tem nenhum treino cadastrado !");
+                codTreino.setText("");
+            }
             
         }
         
   
     }//GEN-LAST:event_botaoBuscarActionPerformed
                                           
-    private void listarTodos(){
+    private void listarTodos(ArrayList<Treinos> treinos){
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
-        String dados = "Listar todos os treinos aqui";
-        JTextArea areaDados = new JTextArea(dados);
+        StringBuilder TodosDados = new StringBuilder();
+        Treinos treino;
+        for (int i = 0; i < treinos.size(); i++) {
+        treino = treinos.get(i);
+        if(i==0){
+            String dados = " Treino Nº "+i+"\n\n "+treino.getDescricao();
+            TodosDados.append(dados);
+        }else{
+            String dados = "\n\n Treino Nº"+i+"\n\n "+treino.getDescricao();
+            TodosDados.append(dados);
+        }
+        }
+        JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);
         resultado.setVisible(true);
     
     }
-        private void buscaTreino(int i){
+        private void buscaTreino(Treinos treino){
         JDialog resultado = new JDialog();
         resultado.setTitle("Busca treino");
-        String dados = "Listar os dados do treino de codigo " + i + " aqui";
+        String dados = " Descrição do treino:\n\n "+treino.getDescricao();
         JTextArea areaDados = new JTextArea(dados);
         areaDados.setEditable(false);
         resultado.add(areaDados);

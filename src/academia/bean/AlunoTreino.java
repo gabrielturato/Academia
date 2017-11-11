@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * Classe que cria vinculo entre alunos ativos e treinos
  * @author Turato
  */
-public class AlunoTreino {
+public class AlunoTreino implements java.io.Serializable{
     private int cod_aluno;
     private final LocalDate data_inicio;
     private final LocalDate data_fim;

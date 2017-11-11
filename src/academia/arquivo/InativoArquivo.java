@@ -23,37 +23,27 @@ public class InativoArquivo {
      * Adiciona um aluno inativo ao documento
      * alunos_inativos.txt
      * @param i novo aluno inativo a ser adicionado
+     * @return true caso adicione com sucesso, false do contrário
      */
-    public void adicionaInativo(Inativo i) throws ExisteException{
+    public boolean adicionaInativo(Inativo i){
         inativos=operar.lerListaInativo("alunos_inativos.txt");
         if(inativos==null){
             ListaAluno.adicionaInativo(i);
             inativos=ListaAluno.getListaInativos();
             boolean sucesso=operar.salvarListaInativo("alunos_inativos.txt", inativos);
-            if(sucesso==true){
-                System.out.println("Aluno invalidado com sucesso !");
-            }else{
-                System.out.println("Não foi possível invalidar o aluno !");
-            } 
+            return sucesso;
         }else{
-            if(inativos.contains(i)){
-                throw new ExisteException("Esse aluno já foi invalidado");
-            }else{
-                ListaAluno.setListaInativos(inativos);
-                ListaAluno.adicionaInativo(i);
-                inativos=ListaAluno.getListaInativos();
-                boolean sucesso=operar.salvarListaInativo("alunos_inativos.txt", inativos);
-                if(sucesso==true){
-                    System.out.println("Aluno invalidado com sucesso !");
-                }else{
-                    System.out.println("Não foi possível invalidar o aluno !");
-                }   
-            }
+            ListaAluno.setListaInativos(inativos);
+            ListaAluno.adicionaInativo(i);
+            inativos=ListaAluno.getListaInativos();
+            boolean sucesso=operar.salvarListaInativo("alunos_inativos.txt", inativos);
+            return sucesso;
         }
     }
      /**
       * Lista todos os alunos inativos no
       * documento alunos_inativos.txt
+      * @return ArrayList de alunos invalidados
       * @throws NaoExisteException caso não exista nenhum aluno invalidado
       */
      public ArrayList<Inativo> listaInativo() throws NaoExisteException{
@@ -69,6 +59,7 @@ public class InativoArquivo {
       * através de seus respectivos códigos identificadores
       * @param cod_aluno código identificador do aluno inativo
       * @return Inativo, classe para futuras operações
+      * @throws NaoExisteException caso não exista um aluno com esse código
       */
      public Inativo buscaInativoCodigo(int cod_aluno) throws NaoExisteException{
        try{
@@ -87,6 +78,7 @@ public class InativoArquivo {
      * de seu nome no arquivo alunos_inativos.txt
      * @param nome a ser pesquisado no arquivo
      * @return Inativo, classe para futuras operações
+     * @throws NaoExisteException caso não exista um inativo com esse nome
      */
     public Inativo buscaInativoNome(String nome) throws NaoExisteException{
         try{

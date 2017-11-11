@@ -25,16 +25,19 @@ public class TreinosArquivo {
      * Adiciona um novo treino ao arquivo treinos.txt
      * @param t, classe Treinos a ser inserida
      */
-    public void adicionaTreino(Treinos t){
+    public boolean adicionaTreino(Treinos t){
         treinos=operar.lerListaTreino("treinos.txt");
-        ListaTreinos.setTreinos(treinos);
-        ListaTreinos.adicionaTreino(t);
-        treinos=ListaTreinos.getTreinos();
-        boolean sucesso=operar.salvarListaTreino("treinos.txt", treinos);
-        if(sucesso==true){
-            System.out.println("Treino inserido com sucesso !");
+        if(treinos==null){
+            ListaTreinos.adicionaTreino(t);
+            treinos=ListaTreinos.getTreinos();
+            boolean sucesso=operar.salvarListaTreino("treinos.txt", treinos);
+            return sucesso;
         }else{
-            System.out.println("Não foi possível inserir o treino !");
+            ListaTreinos.setTreinos(treinos);
+            ListaTreinos.adicionaTreino(t);
+            treinos=ListaTreinos.getTreinos();
+            boolean sucesso=operar.salvarListaTreino("treinos.txt", treinos);
+            return sucesso;
         }
     }
     /**

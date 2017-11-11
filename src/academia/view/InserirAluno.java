@@ -5,12 +5,21 @@
  */
 package academia.view;
 
+import academia.arquivo.AtivoArquivo;
+import academia.bean.Ativo;
+import academia.exceptions.ExisteException;
+import academia.exceptions.Log;
+import java.time.LocalDate;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel
  */
 public class InserirAluno extends javax.swing.JFrame {
-
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    private final Log log = new Log();
     /**
      * Creates new form InserirAluno
      */
@@ -243,7 +252,6 @@ public void myInitComponents() {
 
         jPanel1 = new javax.swing.JPanel();
         nomeAluno = new javax.swing.JTextField();
-        codAluno = new javax.swing.JTextField();
         dia = new javax.swing.JComboBox<>();
         mes = new javax.swing.JComboBox<>();
         ano = new javax.swing.JComboBox<>();
@@ -265,13 +273,6 @@ public void myInitComponents() {
         nomeAluno.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nomeAlunoActionPerformed(evt);
-            }
-        });
-
-        codAluno.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código do Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
-        codAluno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                codAlunoActionPerformed(evt);
             }
         });
 
@@ -352,24 +353,25 @@ public void myInitComponents() {
                         .addComponent(jLabel2)
                         .addGap(323, 323, 323))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(nomeAluno)
+                            .addComponent(telefoneAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)
+                                .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(telefoneAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)
-                                    .addComponent(jLabel1)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(14, 14, 14)
-                                        .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(codAluno))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(nomeAluno)
                                     .addComponent(enderecoAluno)
-                                    .addComponent(rgAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE))))
+                                    .addComponent(rgAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 271, Short.MAX_VALUE)))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(122, 122, 122)
+                                .addComponent(jButton1)))
                         .addGap(219, 219, 219))))
         );
         jPanel1Layout.setVerticalGroup(
@@ -381,27 +383,21 @@ public void myInitComponents() {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(codAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(nomeAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rgAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(telefoneAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rgAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(enderecoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
-                        .addComponent(enderecoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(151, Short.MAX_VALUE))
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(ano, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(mes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(dia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(196, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -418,10 +414,6 @@ public void myInitComponents() {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void codAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codAlunoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_codAlunoActionPerformed
 
     private void diaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_diaActionPerformed
         // TODO add your handling code here:
@@ -441,29 +433,59 @@ public void myInitComponents() {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        //Campos 
-        String nome = nomeAluno.getText();
-        int codigo = Integer.parseInt(codAluno.getText());
-        String endereco = enderecoAluno.getText();
-        String rg = rgAluno.getText();
-        String telefone = telefoneAluno.getText();
-        //Aniversário
-        String diaString = dia.getSelectedItem().toString();
-        int diaNiver = Integer.parseInt(diaString);
-        String mesString = mes.getSelectedItem().toString();
-        int mesNiver = Integer.parseInt(mesString);
-        String anoString = ano.getSelectedItem().toString();
-        int anoNiver = Integer.parseInt(anoString);
+        if(nomeAluno.getText().length()==0||enderecoAluno.getText().length()==0||rgAluno.getText().length()==0||telefoneAluno.getText().length()==0){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos !");
+            nomeAluno.setText("");
+            enderecoAluno.setText("");
+            rgAluno.setText("");
+            telefoneAluno.setText("");
+        }else{
+            
+            //Campos 
+            String nome = nomeAluno.getText();
+            String endereco = enderecoAluno.getText();
+            String rg = rgAluno.getText();
+            String telefone = telefoneAluno.getText();
+            //Aniversário
+            String diaString = dia.getSelectedItem().toString();
+            int diaNiver = Integer.parseInt(diaString);
+            String mesString = mes.getSelectedItem().toString();
+            int mesNiver = Integer.parseInt(mesString);
+            String anoString = ano.getSelectedItem().toString();
+            int anoNiver = Integer.parseInt(anoString);
+            //Inserção
         
-        
-        System.out.println("Codigo do aluno : " + codigo);
-        System.out.println("Nome do Aluno : " + nome);
-        System.out.println("Data de aniversário : " + diaNiver + "/" + mesNiver + "/" + anoNiver);
-        System.out.println("Endereço : " + endereco);
-        System.out.println("RG : " + rg);
-        System.out.println("Aluno Gabriel cadastrado com sucesso!");
-        
-        
+            Ativo AlunoAtivo = new Ativo();
+            AlunoAtivo.setData_nasc(LocalDate.of(anoNiver, mesNiver, diaNiver));
+            AlunoAtivo.setEndereco(endereco);
+            AlunoAtivo.setNome(nome);
+            AlunoAtivo.setRG(rg);
+            AlunoAtivo.setTelefone(telefone);
+
+            try {
+                boolean sucesso=arquivoAtivo.adicionaAtivo(AlunoAtivo);
+                if(sucesso==true){
+                    JOptionPane.showMessageDialog(null, "Aluno inserido com sucesso !");
+                    nomeAluno.setText("");
+                    enderecoAluno.setText("");
+                    rgAluno.setText("");
+                    telefoneAluno.setText("");
+                }else{
+                    JOptionPane.showMessageDialog(null, "Falha ao inserir o aluno !");
+                    nomeAluno.setText("");
+                    enderecoAluno.setText("");
+                    rgAluno.setText("");
+                    telefoneAluno.setText("");
+                }
+            } catch (ExisteException ex) {
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Já existe esse aluno !");
+                nomeAluno.setText("");
+                enderecoAluno.setText("");
+                rgAluno.setText("");
+                telefoneAluno.setText("");
+            } 
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void rgAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgAlunoActionPerformed
@@ -521,7 +543,6 @@ public void myInitComponents() {
     private javax.swing.JMenuItem vincularTreino;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> ano;
-    private javax.swing.JTextField codAluno;
     private javax.swing.JComboBox<String> dia;
     private javax.swing.JTextField enderecoAluno;
     private javax.swing.JButton jButton1;

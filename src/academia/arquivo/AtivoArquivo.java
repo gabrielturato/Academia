@@ -6,6 +6,7 @@
 package academia.arquivo;
 
 import academia.bean.Ativo;
+import academia.bean.Inativo;
 //import academia.bean.Inativo;
 import academia.exceptions.*;
 import academia.lista.ListaAluno;
@@ -34,30 +35,22 @@ public class AtivoArquivo {
      * de aluno já exista no ArrayList, não 
      * permite cadastrar novamente
      */
-     public void adicionaAtivo(Ativo a) throws ExisteException{
+     public boolean adicionaAtivo(Ativo a) throws ExisteException{
         ativos=operar.lerListaAtivo("alunos_ativos.txt");
         if(ativos==null){
-            ListaAluno.adicionaAtivo(a);
+            boolean sucesso=ListaAluno.adicionaAtivo(a);
             ativos=ListaAluno.getListaAtivos();
-            boolean sucesso=operar.salvarListaAtivo("alunos_ativos.txt", ativos);
-            if(sucesso==true){
-                System.out.println("Aluno inserido com sucesso !");
-            }else{
-                System.out.println("Não foi possível inserir o aluno !");
-            } 
+            operar.salvarListaAtivo("alunos_ativos.txt", ativos);
+            return sucesso;
         }else{
             if(ativos.contains(a)){
                 throw new ExisteException("Já existe esse aluno registrado");
             }else{
                 ListaAluno.setListaAtivos(ativos);
-                ListaAluno.adicionaAtivo(a);
+                boolean sucesso = ListaAluno.adicionaAtivo(a);
                 ativos=ListaAluno.getListaAtivos();
-                boolean sucesso=operar.salvarListaAtivo("alunos_ativos.txt", ativos);
-                if(sucesso==true){
-                    System.out.println("Aluno inserido com sucesso !");
-                }else{
-                    System.out.println("Não foi possível inserir o aluno !");
-                }   
+                operar.salvarListaAtivo("alunos_ativos.txt", ativos);
+                return sucesso;
                 }
         } 
      }
@@ -117,6 +110,45 @@ public class AtivoArquivo {
         }
         return aluno;
    }
-   
-   //DELETAR ATIVO
+   /**
+    * Função que transforma um ativo em inativo
+    * @param cod_ativo
+    * @return 
+    * @throws NaoExisteException caso o aluno não exista
+    */
+   public Inativo transformaInativo(int cod_ativo) throws NaoExisteException{
+       Inativo inativo = new Inativo();
+       try{
+            ativos = operar.lerListaAtivo("alunos_ativos.txt");
+            ListaAluno.setListaAtivos(ativos);
+            aluno=ListaAluno.buscaAtivo(cod_ativo);
+            inativo=ListaAluno.transformaInativo(aluno);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhum aluno registrado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno com esse nome");
+        }
+        return inativo;
+   }
+   /**
+    * Função que deleta um aluno ativo se existir
+    * @param cod_ativo codigo do aluno a ser deletado
+    * @return boolean se for bem-sucedida ou falhou
+    * @throws NaoExisteException caso o aluno não exista na lista
+    */
+   public boolean deletaAtivoCodigo(int cod_ativo) throws NaoExisteException{
+       boolean sucesso=false;
+       try{
+            ativos = operar.lerListaAtivo("alunos_ativos.txt");
+            ListaAluno.setListaAtivos(ativos);
+            sucesso=ListaAluno.deletaAtivo(cod_ativo);
+            ativos = ListaAluno.getListaAtivos();
+            operar.salvarListaAtivo("alunos_ativos.txt", ativos);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhum aluno registrado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno com esse nome");
+        }
+       return sucesso;
+   }
 }

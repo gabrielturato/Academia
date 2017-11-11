@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * Controla dados a respeito da mensalidade
  * @author Turato
  */
-public class Mensalidade{
+public class Mensalidade implements java.io.Serializable{
     
     private final float valor;
     int cod_aluno;

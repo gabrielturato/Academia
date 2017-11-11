@@ -5,12 +5,26 @@
  */
 package academia.view;
 
+import academia.arquivo.AlunoTreinoArquivo;
+import academia.arquivo.AtivoArquivo;
+import academia.arquivo.TreinosArquivo;
+import academia.bean.AlunoTreino;
+import academia.bean.Ativo;
+import academia.bean.Treinos;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Gabriel
  */
 public class VincularTreinoAluno extends javax.swing.JFrame {
-
+    AlunoTreinoArquivo arquivoVinculo = new AlunoTreinoArquivo();
+    AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    TreinosArquivo arquivoTreino = new TreinosArquivo();
+    private final Log log = new Log();
     /**
      * Creates new form VincularTreinoAluno
      */
@@ -326,18 +340,55 @@ public void myInitComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int codigoTreino = Integer.parseInt(codTreino.getText());
-        int codigoAluno = Integer.parseInt(codAluno.getText());
-        
-        //Funcao que vincula os dois itens
-        vincular(codigoTreino,codigoAluno);
+        if(codTreino.getText().equals("")||codAluno.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos !");
+            codTreino.setText("");
+            codAluno.setText("");
+        }else{
+            try{
+                int codigoTreino = Integer.parseInt(codTreino.getText());
+                int codigoAluno = Integer.parseInt(codAluno.getText());
+                AlunoTreino vinculo = new AlunoTreino();
+                vinculo.setCod_aluno(codigoAluno);
+                vinculo.setCod_treino(codigoTreino);
+                try {
+                    Ativo aluno=arquivoAtivo.buscaAtivoCodigo(codigoAluno);
+                    if(aluno!=null){
+                        try{
+                          Treinos treino=arquivoTreino.buscaTreinoCodigo(codigoTreino);
+                          if(treino!=null){
+                            boolean sucesso=arquivoVinculo.adicionaVinculo(vinculo);
+                            if(sucesso==true){
+                                JOptionPane.showMessageDialog(null, "Vinculo registrado !");
+                                codAluno.setText("");
+                                codTreino.setText("");
+                            }else{
+                                JOptionPane.showMessageDialog(null, "Não foi possível registrar esse vínculo !");
+                                codAluno.setText("");
+                                codTreino.setText("");
+                            }
+                          }  
+                        }catch(NaoExisteException ex){
+                            log.getLogger().log(Level.SEVERE, ex.getMessage());
+                            JOptionPane.showMessageDialog(null, "Não existe um treino com esse código !");
+                            codAluno.setText("");
+                            codTreino.setText("");
+                        }
+                    }
+                } catch (NaoExisteException ex) {
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    JOptionPane.showMessageDialog(null, "Não existe um aluno com esse código !");
+                    codAluno.setText("");
+                    codTreino.setText("");
+                }
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                codAluno.setText("");
+                codTreino.setText("");
+            }
+            
+        } 
     }//GEN-LAST:event_jButton1ActionPerformed
-    private void vincular(int codigoTreino,int codigoAluno){
-        //funcao
-        System.out.println("Código aluno : " + codigoAluno);
-        System.out.println("Código Treino : " + codigoTreino);
-        System.out.println("Aluno " + codigoAluno + " e Treino " + codigoTreino + "vinculados com sucesso.");
-    }
     /**
      * @param args the command line arguments
      */

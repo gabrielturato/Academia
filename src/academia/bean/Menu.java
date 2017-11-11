@@ -14,6 +14,7 @@ import academia.exceptions.Log;
 import academia.arquivo.TreinosArquivo;
 import academia.exceptions.ExisteException;
 import academia.exceptions.NaoExisteException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.logging.Level;
 /**
@@ -314,7 +315,6 @@ public class Menu {
                 System.out.print("Escreva o treino : ");
                 descricao = entrada.nextLine();
                 
-                treino.setCod_treino(cod_treino);
                 treino.setDescricao(descricao);
                 
                 arquivoTreino.adicionaTreino(treino);
@@ -482,7 +482,7 @@ public class Menu {
                 System.out.println("Opção selecionada : Inserir entrada.");
                 System.out.print("Digite o código do aluno : ");
                 codigo = entrada.nextInt();
-                catraca = new Catraca(LocalDate.now());
+                catraca = new Catraca(LocalDateTime.now());
                 catraca.setCod_aluno(codigo);
    
                 arquivoCatraca.adicionaEntrada(catraca);

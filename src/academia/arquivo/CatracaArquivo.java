@@ -26,17 +26,20 @@ public class CatracaArquivo {
      * 
      * @param c
      */
-    public void adicionaEntrada(Catraca c){
+    public boolean adicionaEntrada(Catraca c){
         entradas=operar.lerListaCatraca("entradas.txt");
-        ListaEntradas.setEntradas(entradas);
-        ListaEntradas.adicionaEntrada(c);
-        entradas=ListaEntradas.getEntradas();
-        boolean sucesso=operar.salvarListaCatraca("entradas.txt", entradas);
-        if(sucesso==true){
-            System.out.println("Entrada inserida com sucesso !");
+        if(entradas==null){
+            ListaEntradas.adicionaEntrada(c);
+            entradas=ListaEntradas.getEntradas();
+            boolean sucesso=operar.salvarListaCatraca("entradas.txt", entradas);
+            return sucesso;
         }else{
-            System.out.println("Não foi possível inserir a entrada !");
-        }   
+            ListaEntradas.setEntradas(entradas);
+            ListaEntradas.adicionaEntrada(c);
+            entradas=ListaEntradas.getEntradas();
+            boolean sucesso=operar.salvarListaCatraca("entradas.txt", entradas);
+            return sucesso;
+        }
     }
     /**
      * Lista todas as entradas registradas

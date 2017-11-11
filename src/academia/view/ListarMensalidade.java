@@ -5,7 +5,16 @@
  */
 package academia.view;
 
+import academia.arquivo.AtivoArquivo;
+import academia.arquivo.MensalidadeArquivo;
+import academia.bean.Ativo;
+import academia.bean.Mensalidade;
+import academia.exceptions.Log;
+import academia.exceptions.NaoExisteException;
+import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -13,7 +22,9 @@ import javax.swing.JTextArea;
  * @author Gabriel
  */
 public class ListarMensalidade extends javax.swing.JFrame {
-
+    private final Log log = new Log();
+    private final MensalidadeArquivo arquivoMensalidade = new MensalidadeArquivo();
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
     /**
      * Creates new form ListarMensalidade
      */
@@ -126,34 +137,94 @@ public class ListarMensalidade extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscarBotaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscarBotaoActionPerformed
-        int codigo = Integer.parseInt(codMensalidade.getText());
         if(buscarRadio.isSelected()){
-            buscaMensalidade(codigo);
+            try{
+                int codigo = Integer.parseInt(codMensalidade.getText());
+                Mensalidade mensalidade;
+                try {
+                        mensalidade=arquivoMensalidade.buscaMensalidadeCodigo(codigo);
+                        buscaMensalidade(mensalidade);
+                    }catch(NaoExisteException ex){
+                        log.getLogger().log(Level.SEVERE, ex.getMessage());
+                        JOptionPane.showMessageDialog(null, "Não existe uma mensalidade com esse código !");
+                        codMensalidade.setText("");
+                    }
+            }catch(NumberFormatException ex){
+                JOptionPane.showMessageDialog(null, "Esse Campo só aceita números" ,"Informação",JOptionPane.INFORMATION_MESSAGE);
+                codMensalidade.setText("");
+            }
+            
         }else{
-            listarTodos();
+            ArrayList<Mensalidade> mensalidades;
+            try{
+                mensalidades = arquivoMensalidade.listaMensalidades();
+                listarTodos(mensalidades);
+            }catch(NaoExisteException ex){
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                JOptionPane.showMessageDialog(null, "Não tem nenhuma mensalidade cadastrada !");
+                codMensalidade.setText("");
+            }
         }
     }//GEN-LAST:event_buscarBotaoActionPerformed
- private void listarTodos(){
+ private void listarTodos(ArrayList<Mensalidade> mensalidades){
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
-        String dados = "Listar todos as mensalidades aqui";
-        JTextArea areaDados = new JTextArea(dados);
+        StringBuilder TodosDados = new StringBuilder();
+        Ativo aluno;
+        Mensalidade mensalidade;
+        for (int i = 0; i < mensalidades.size(); i++) {
+            try{
+                mensalidade=mensalidades.get(i);
+                aluno=arquivoAtivo.buscaAtivoCodigo(mensalidade.getCod_aluno());
+                if(i==0){
+                    String dados = " Mensalidade Nº "+i+"\n Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone do aluno: "+aluno.getTelefone()+"\n Endereço do Aluno: "+aluno.getEndereco();
+                    TodosDados.append(dados);
+                }else{
+                    String dados = "\n\n Mensalidade Nº "+i+"\n Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone do aluno: "+aluno.getTelefone()+"\n Endereço do Aluno: "+aluno.getEndereco();
+                    TodosDados.append(dados);
+                }
+            }catch(NaoExisteException ex){
+                log.getLogger().log(Level.SEVERE, ex.getMessage());
+                mensalidade=mensalidades.get(i);
+                if(i==0){
+                    String dados = "Mensalidade Nº "+i+"\n Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Não foi encontrado dados do aluno. ";
+                    TodosDados.append(dados);
+                }else{
+                    String dados = "\n\n Mensalidade Nº "+i+"\n Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Não foi encontrado dados do aluno. ";
+                    TodosDados.append(dados);
+                }
+            }
+            
+        }
+        JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);
         resultado.setVisible(true);
     
     }
-        private void buscaMensalidade(int i){
+        private void buscaMensalidade(Mensalidade mensalidade){
         JDialog resultado = new JDialog();
         resultado.setTitle("Busca mensalidade");
-        String dados = "Listar os dados da mensalidade de codigo " + i + " aqui";
-        JTextArea areaDados = new JTextArea(dados);
-        areaDados.setEditable(false);
-        resultado.add(areaDados);
-        resultado.setSize(500,500);
-        resultado.setVisible(true);
-    
+        Ativo aluno;
+        try{
+            aluno=arquivoAtivo.buscaAtivoCodigo(mensalidade.getCod_aluno());
+            String dados = " Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone do aluno: "+aluno.getTelefone()+"\n Endereço do Aluno: "+aluno.getEndereco();
+            JTextArea areaDados = new JTextArea(dados);
+            areaDados.setEditable(false);
+            resultado.add(areaDados);
+            resultado.setSize(500,500);
+            resultado.setVisible(true);
+        }catch(NaoExisteException ex){
+            log.getLogger().log(Level.SEVERE, ex.getMessage());
+            String dados = " Valor: "+mensalidade.getValor()+"\n Data de pagamento: "+mensalidade.getData_pagamento()+"\n Data de vencimento: "+mensalidade.getData_fim()+"\n Não foi encontrado dados do aluno.";
+            JTextArea areaDados = new JTextArea(dados);
+            areaDados.setEditable(false);
+            resultado.add(areaDados);
+            resultado.setSize(500,500);
+            resultado.setVisible(true);
+            codMensalidade.setText("");
+        }
     }
     /**
      * @param args the command line arguments

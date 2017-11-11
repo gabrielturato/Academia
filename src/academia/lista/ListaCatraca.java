@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @author Turato
  */
 public class ListaCatraca {
-    private ArrayList<Catraca> ListaEntradas;
+    private ArrayList<Catraca> ListaEntradas = new ArrayList();
     /**
      * Get the value of ListaEntradas
      * @return the value of ListaEntradas
