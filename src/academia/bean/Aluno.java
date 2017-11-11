@@ -9,8 +9,7 @@ import java.time.LocalDate;
  * Interface aluno para ativos e inativos serem implementadas
  * @author Turato
  */
-public abstract class Aluno {
-    protected int cod_aluno;
+public abstract class Aluno implements java.io.Serializable {
     protected String nome;
     protected String telefone;
     protected String RG;
@@ -21,24 +20,6 @@ public abstract class Aluno {
      * Construtor
      */
     public Aluno() {
-    }
-
-    /**
-     * Get the value of cod_aluno 
-     * 
-     * @return the value of cod_aluno
-     */
-    public int getCod_aluno() {
-        return cod_aluno;
-    }
-    
-    /**
-     * Set the value of cod_aluno
-     * 
-     * @param cod_aluno new value of cod_aluno
-     */
-    public void setCod_aluno(int cod_aluno) {
-        this.cod_aluno = cod_aluno;
     }
 
     /**

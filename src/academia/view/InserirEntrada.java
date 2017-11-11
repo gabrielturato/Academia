@@ -6,6 +6,7 @@
 package academia.view;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 
 /**
@@ -264,6 +265,11 @@ public void myInitComponents() {
         codAluno.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         codAluno.setToolTipText("");
         codAluno.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Código do Aluno", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        codAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                codAlunoActionPerformed(evt);
+            }
+        });
 
         botaoInserir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         botaoInserir.setText("Inserir");
@@ -319,9 +325,17 @@ public void myInitComponents() {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoInserirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoInserirActionPerformed
-    int codigo = Integer.parseInt(codAluno.getText());        // TODO add your handling code here:
-    inserirEntrada(codigo);
+    if(codAluno.getText().equals("")){
+        JOptionPane.showMessageDialog(null, "Preencha o campo de código !");
+    }else{
+         //int codigo = Integer.parseInt(codAluno.getText());        // TODO add your handling code here:
+        //inserirEntrada(codigo);
+    }
     }//GEN-LAST:event_botaoInserirActionPerformed
+
+    private void codAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_codAlunoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_codAlunoActionPerformed
                                          
   private void inserirEntrada(int codigoAluno){
         JDialog resultado = new JDialog();

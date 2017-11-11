@@ -6,123 +6,68 @@
 package academia.arquivo;
 
 import academia.bean.Catraca;
-import academia.exceptions.CodigoException;
 import academia.exceptions.NaoExisteException;
-import academia.arquivo.MensalidadeArquivo;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import static java.lang.Integer.parseInt;
-import static java.time.LocalDate.parse;
+import academia.exceptions.Log;
+import academia.lista.ListaCatraca;
+import java.util.ArrayList;
 /**
  * Classe que manipula todas as entradas
  * no arquivo catraca.txt
  * @author Turato
  */
-public class CatracaArquivo {    
+public class CatracaArquivo {  
+    private final Operacoes operar = new Operacoes();
+    private final ListaCatraca ListaEntradas = new ListaCatraca();
+    private ArrayList<Catraca> entradas = new ArrayList();
+    private Catraca entrada;
+    private final Log log = new Log();
     /**
-     * Registra uma entrada, caso a mensalidade esteja em dia
+     * Registra uma entrada
      * 
      * @param c
      */
     public void adicionaEntrada(Catraca c){
-        try{
-                FileWriter arquivo = new FileWriter("entradas.txt",true);
-                BufferedWriter escrever = new BufferedWriter(arquivo);
-                //PESQUISAR MENSALIDADE
-                String linha = c.getCod_aluno()+";"+c.getData_entrada().toString();
-                escrever.write(linha);
-            
-                escrever.close();
-                arquivo.close();
-            }catch(IOException  e){
-                System.out.println("Erro ao escrever o arquivo");
-            }
-                System.out.println("Entrada do aluno número "+c.getCod_aluno()+" foi registrada no horário "+c.getData_entrada().toString());
+        entradas=operar.lerListaCatraca("entradas.txt");
+        ListaEntradas.setEntradas(entradas);
+        ListaEntradas.adicionaEntrada(c);
+        entradas=ListaEntradas.getEntradas();
+        boolean sucesso=operar.salvarListaCatraca("entradas.txt", entradas);
+        if(sucesso==true){
+            System.out.println("Entrada inserida com sucesso !");
+        }else{
+            System.out.println("Não foi possível inserir a entrada !");
+        }   
     }
     /**
      * Lista todas as entradas registradas
      * no documento entradas.txt
+     * @return ArrayList<Catraca> lista de entradas registradas
+     * @throws NaoExisteException caso não exista nenhuma entrada a ser listada
      */
-    public void listaEntradas(){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("entradas.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    System.out.println("-------------Aluno Nº "+palavras[0]+"-------------");
-                    System.out.println("Horário de Entrada: "+palavras[1]);
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-                File file = new File("entradas.txt");
-                System.err.println("Arquivo criado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+    public ArrayList<Catraca> listaEntradas() throws NaoExisteException{
+        entradas = operar.lerListaCatraca("entradas.txt");
+        if(entradas==null){
+           throw new NaoExisteException("Não tem nenhuma entrada registrado");
+        }else{
+           return entradas;
         }
      }
     /**
-     * Busca a última entrada realizada pelo aluno com o
-     * código específicado no arquivo entradas.txt
-     * @param cod_aluno
-     * @return Objeto Catraca
-     * @throws NaoExisteException 
+     * Busca a última entrada realizada pelo seu código
+     * @param codigo da entrada
+     * @return Catraca entrada que foi realizada
+     * @throws NaoExisteException não existe uma entrada com esse código
      */
-    public Catraca buscaEntradaCodigo(int cod_aluno) throws NaoExisteException{
-        FileReader arquivo = null;
-        BufferedReader br = null;
+    public Catraca buscaEntradaCodigo(int codigo) throws NaoExisteException{
         try{
-            arquivo = new FileReader("entradas.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(parseInt(palavras[0])==cod_aluno){
-                        Catraca c = new Catraca(parse(palavras[1]));
-                        c.setCod_aluno(parseInt(palavras[0]));
-                        return c;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+            entradas = operar.lerListaCatraca("entradas.txt");
+            ListaEntradas.setEntradas(entradas);
+            entrada=ListaEntradas.buscaEntrada(codigo);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhuma entrada registrada");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe uma entrada com esse código");
         }
-        throw new NaoExisteException("O aluno de código "+cod_aluno+" não tem nenhuma entrada registrada");     
-     }
-   
+        return entrada;
+    }
 }

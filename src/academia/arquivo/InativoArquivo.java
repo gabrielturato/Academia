@@ -6,82 +6,62 @@
 package academia.arquivo;
 
 import academia.bean.Inativo;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import static java.lang.Integer.parseInt;
-import static java.time.LocalDate.parse;
+import academia.exceptions.*;
+import academia.lista.ListaAluno;
+import java.util.ArrayList;
 /**
  * Classe que trabalha com alunos inativos
  * no arquivo alunos_inativos.txt
  * @author Turato
  */
 public class InativoArquivo {
-        /**
-         * Adiciona um aluno inativo ao documento
-         * alunos_inativos.txt
-         * @param i novo aluno inativo a ser adicionado
-         */
-        public void adicionaInativo(Inativo i){
-        try{
-            FileWriter arquivo = new FileWriter("alunos_inativos.txt",true);
-            BufferedWriter escrever = new BufferedWriter(arquivo);
-            
-            String linha = i.getCod_aluno()+";"+i.getNome()+";"+i.getEndereco()+";"+i.getRG()+";"+i.getTelefone()+";"+i.getData_nasc().toString()+"\n";
-            escrever.write(linha);
-            
-            escrever.close();
-            arquivo.close();
-        }catch(IOException  e){
-            System.out.println("Erro ao escrever o arquivo");
+    private ArrayList<Inativo> inativos = new ArrayList();
+    private final ListaAluno ListaAluno = new ListaAluno();
+    private final Operacoes operar = new Operacoes();
+    private Inativo aluno = new Inativo();
+    /**
+     * Adiciona um aluno inativo ao documento
+     * alunos_inativos.txt
+     * @param i novo aluno inativo a ser adicionado
+     */
+    public void adicionaInativo(Inativo i) throws ExisteException{
+        inativos=operar.lerListaInativo("alunos_inativos.txt");
+        if(inativos==null){
+            ListaAluno.adicionaInativo(i);
+            inativos=ListaAluno.getListaInativos();
+            boolean sucesso=operar.salvarListaInativo("alunos_inativos.txt", inativos);
+            if(sucesso==true){
+                System.out.println("Aluno invalidado com sucesso !");
+            }else{
+                System.out.println("Não foi possível invalidar o aluno !");
+            } 
+        }else{
+            if(inativos.contains(i)){
+                throw new ExisteException("Esse aluno já foi invalidado");
+            }else{
+                ListaAluno.setListaInativos(inativos);
+                ListaAluno.adicionaInativo(i);
+                inativos=ListaAluno.getListaInativos();
+                boolean sucesso=operar.salvarListaInativo("alunos_inativos.txt", inativos);
+                if(sucesso==true){
+                    System.out.println("Aluno invalidado com sucesso !");
+                }else{
+                    System.out.println("Não foi possível invalidar o aluno !");
+                }   
+            }
         }
-            System.out.println("Aluno "+i.getNome()+" foi inativado");
-
     }
      /**
       * Lista todos os alunos inativos no
       * documento alunos_inativos.txt
+      * @throws NaoExisteException caso não exista nenhum aluno invalidado
       */
-     public void listaInativo(){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("alunos_inativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    System.out.println("-------------Aluno Nº "+palavras[0]+"-------------");
-                    System.out.println("Nome: "+palavras[1]);
-                    System.out.println("Endereço: "+palavras[2]);
-                    System.out.println("RG: "+palavras[3]);
-                    System.out.println("Telefone: "+palavras[4]);
-                    System.out.println("Data de Nascimento: "+palavras[5]);
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-                File file = new File("alunos_ativos.txt");
-                System.err.println("Arquivo criado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+     public ArrayList<Inativo> listaInativo() throws NaoExisteException{
+        inativos = operar.lerListaInativo("alunos_inativos.txt");
+        if(inativos==null){
+           throw new NaoExisteException("Não existe nenhum aluno invalidado");
+        }else{
+           return inativos;
         }
      }
      /**
@@ -90,45 +70,17 @@ public class InativoArquivo {
       * @param cod_aluno código identificador do aluno inativo
       * @return Inativo, classe para futuras operações
       */
-     public Inativo buscaInativoCodigo(int cod_aluno){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("alunos_inativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(parseInt(palavras[0])==cod_aluno){
-                        Inativo i = new Inativo();
-                        i.setCod_aluno(parseInt(palavras[0]));
-                        i.setNome(palavras[1]);
-                        i.setEndereco(palavras[2]);
-                        i.setRG(palavras[3]);
-                        i.setTelefone(palavras[4]);
-                        i.setData_nasc(parse(palavras[5]));
-                        return i;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+     public Inativo buscaInativoCodigo(int cod_aluno) throws NaoExisteException{
+       try{
+            inativos = operar.lerListaInativo("alunos_inativos.txt");
+            ListaAluno.setListaInativos(inativos);
+            aluno=ListaAluno.buscaInativo(cod_aluno);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não existe nenhum aluno invalidado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno invalidado com esse código");
         }
-        return null;     
+        return aluno;
      }
     /**
      * Busca todos o aluno inativo a partir
@@ -136,44 +88,16 @@ public class InativoArquivo {
      * @param nome a ser pesquisado no arquivo
      * @return Inativo, classe para futuras operações
      */
-    public Inativo buscaInativoNome(String nome){
-        FileReader arquivo = null;
-        BufferedReader br = null;
+    public Inativo buscaInativoNome(String nome) throws NaoExisteException{
         try{
-            arquivo = new FileReader("alunos_inativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(palavras.equals(nome)){
-                        Inativo i = new Inativo();
-                        i.setCod_aluno(parseInt(palavras[0]));
-                        i.setNome(palavras[1]);
-                        i.setEndereco(palavras[2]);
-                        i.setRG(palavras[3]);
-                        i.setTelefone(palavras[4]);
-                        i.setData_nasc(parse(palavras[5]));
-                        return i;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+            inativos = operar.lerListaInativo("alunos_inativos.txt");
+            ListaAluno.setListaInativos(inativos);
+            aluno=ListaAluno.buscaInativo(nome);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não existe nenhum aluno invalidado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno invalidado com esse nome");
         }
-        return null;     
-     }
+        return aluno;
+    }
 }

@@ -16,18 +16,9 @@ import java.time.Period;
     /**
      * Construtor padrão, apenas com super
      */
+        
     public Ativo() {
         super();
-    }
-    
-    @Override
-    public int getCod_aluno(){
-        return this.cod_aluno;
-    }
-    
-    @Override 
-    public void setCod_aluno(int cod_aluno){
-        this.cod_aluno = cod_aluno;
     }
     
     @Override

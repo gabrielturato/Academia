@@ -10,23 +10,25 @@ import academia.arquivo.AtivoArquivo;
 import academia.arquivo.CatracaArquivo;
 import academia.arquivo.InativoArquivo;
 import academia.arquivo.MensalidadeArquivo;
+import academia.exceptions.Log;
 import academia.arquivo.TreinosArquivo;
-import academia.exceptions.CodigoException;
+import academia.exceptions.ExisteException;
 import academia.exceptions.NaoExisteException;
+import java.util.ArrayList;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 /**
  * Responsável pela impressão de menus no console
  * @author Gabriel Casemiro
  */
 public class Menu {
-    Scanner entrada = new Scanner(System.in);
-    AtivoArquivo ativo = new AtivoArquivo();
-    InativoArquivo inativo = new InativoArquivo();
-    TreinosArquivo arquivoTreino = new TreinosArquivo();
-    MensalidadeArquivo arquivoMensalidade = new MensalidadeArquivo();
-    CatracaArquivo arquivoCatraca = new CatracaArquivo();
-  
+    private final Scanner entrada = new Scanner(System.in);
+    private final AtivoArquivo arquivoAtivo = new AtivoArquivo();
+    private final InativoArquivo arquivoInativo = new InativoArquivo();
+    private final TreinosArquivo arquivoTreino = new TreinosArquivo();
+    private final MensalidadeArquivo arquivoMensalidade = new MensalidadeArquivo();
+    private final CatracaArquivo arquivoCatraca = new CatracaArquivo();
+    private final Log log = new Log();
+    
    int nivelMenu = 0;
    /**
     * Pega o nível do menu da classe e retorna
@@ -73,7 +75,7 @@ public class Menu {
                 System.out.println("*         3. Buscar por código                    *");
                 System.out.println("*         4. Buscar por nome                      *");
                 System.out.println("*         5. Inativar um aluno-> Não implementado *");
-                System.out.println("*         6. Listar inativos  -> Não implementado *");
+                System.out.println("*         6. Listar inativos                      *");
                 System.out.println("*         7. Voltar                               *");
                 System.out.print("Escolha uma opção do menu : ");
                 selecao = entrada.nextInt();
@@ -129,14 +131,16 @@ public class Menu {
         
     }
     /**
-     * Ao submenu de aluno selecionado, escolher as opções
+     * Ao submenu de AlunoAtivo selecionado, escolher as opções
      * @param opcao a ser selecionada
      */
     public void alunosMenu(int opcao){
-        Ativo aluno;
-        aluno = new Ativo();
-        String nome;
+        Ativo AlunoAtivo = new Ativo();
+        Inativo AlunoInativo = new Inativo();
+        ArrayList<Ativo> ListaAtivos = new ArrayList();
+        ArrayList<Inativo> ListaInativos = new ArrayList();
         int codigo;
+        String nome;
         String endereco;
         String rg;
         int anoNasc;
@@ -145,12 +149,10 @@ public class Menu {
         String telefone;
         switch (opcao) {
             case 1:
-                //Funcao inserir aluno
+                //Funcao inserir AlunoAtivo
                 System.out.println("Opção selecionada : Inserir aluno.");
-                System.out.print("Digite o codigo do aluno : ");
-                codigo = entrada.nextInt();
-                entrada.nextLine();
                 System.out.print("Digite o nome do aluno : ");
+                entrada.nextLine();
                 nome = entrada.nextLine();
                 System.out.print("Digite o dia de nascimento do aluno : ");
                 diaNasc = entrada.nextInt();
@@ -168,28 +170,41 @@ public class Menu {
                 
                 System.out.println("Cadastrando...");
                 
+                AlunoAtivo.setData_nasc(LocalDate.of(anoNasc, mesNasc, diaNasc));
+                AlunoAtivo.setEndereco(endereco);
+                AlunoAtivo.setNome(nome);
+                AlunoAtivo.setRG(rg);
+                AlunoAtivo.setTelefone(telefone);
                 
-                
-                aluno.setCod_aluno(codigo);
-                aluno.setData_nasc(LocalDate.of(anoNasc, mesNasc, diaNasc));
-                aluno.setEndereco(endereco);
-                aluno.setNome(nome);
-                aluno.setRG(rg);
-                aluno.setTelefone(telefone);
-                try{
-                    ativo.adicionaAtivo(aluno);
-                }catch(CodigoException e){
-                    System.err.println(e.getMessage());
+                try {
+                    arquivoAtivo.adicionaAtivo(AlunoAtivo);
+                } catch (ExisteException ex) {
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
+                ListaAtivos=null;
                 
-                System.out.println("Cadastro efetuado com sucesso!");
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
                 break;
             case 2:
-                //Funcao listar alunos
+                //Funcao listar ListaAtivos
                 System.out.println("Opção selecionada : Listar alunos.");
-                ativo.listaAtivo();
+                
+                try{
+                    ListaAtivos = arquivoAtivo.listaAtivo();
+                }catch(NaoExisteException ex){
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                }
+                for (int i = 0; i < ListaAtivos.size(); i++) {
+                    AlunoAtivo=ListaAtivos.get(i);
+                    System.out.println("-------------Aluno Nº "+i+"-------------");
+                    System.out.println("Nome: "+AlunoAtivo.getNome());
+                    System.out.println("Endereço: "+AlunoAtivo.getEndereco());
+                    System.out.println("RG: "+AlunoAtivo.getRG());
+                    System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    System.out.println("Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc()));
+                }
+                ListaAtivos = null;
                 
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
@@ -200,16 +215,17 @@ public class Menu {
                 System.out.print("Digite o código do aluno : ");
                 codigo = entrada.nextInt();
                 try {
-                aluno=ativo.buscaAtivoCodigo(codigo);
-                System.out.println("-------------Aluno Nº "+aluno.getCod_aluno()+"-------------");
-                System.out.println("Nome: "+aluno.getNome());
-                System.out.println("Endereço: "+aluno.getEndereco());
-                System.out.println("RG: "+aluno.getRG());
-                System.out.println("Telefone: "+aluno.getTelefone());
-                System.out.println("Idade: "+aluno.descobreIdade(aluno.getData_nasc()));
-                } catch (NaoExisteException ex) {
-                   System.err.println(ex.getMessage());
+                    AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(codigo);
+                    System.out.println("-------------Aluno Nº "+codigo+"-------------");
+                    System.out.println("Nome: "+AlunoAtivo.getNome());
+                    System.out.println("Endereço: "+AlunoAtivo.getEndereco());
+                    System.out.println("RG: "+AlunoAtivo.getRG());
+                    System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    System.out.println("Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc()));   
+                }catch(NaoExisteException ex){
+                   log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
+                ListaAtivos=null;
                 
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
@@ -221,16 +237,19 @@ public class Menu {
                 entrada.nextLine();
                 nome = entrada.nextLine();
                 try{
-                    aluno=ativo.buscaAtivoNome(nome);
-                    System.out.println("-------------Aluno Nº "+aluno.getCod_aluno()+"-------------");
-                    System.out.println("Nome: "+aluno.getNome());
-                    System.out.println("Endereço: "+aluno.getEndereco());
-                    System.out.println("RG: "+aluno.getRG());
-                    System.out.println("Telefone: "+aluno.getTelefone());
-                    System.out.println("Idade: "+aluno.descobreIdade(aluno.getData_nasc()));
+                    AlunoAtivo=arquivoAtivo.buscaAtivoNome(nome);
+                    if(AlunoAtivo==null)
+                       throw new NaoExisteException("Não existe um aluno com esse nome");
+                    System.out.println("----------------Aluno----------------");
+                    System.out.println("Nome: "+AlunoAtivo.getNome());
+                    System.out.println("Endereço: "+AlunoAtivo.getEndereco());
+                    System.out.println("RG: "+AlunoAtivo.getRG());
+                    System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    System.out.println("Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc()));
                 }catch(NaoExisteException ex){
-                    System.err.println(ex.getMessage());
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
+                ListaAtivos=null;
                 
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
@@ -244,9 +263,24 @@ public class Menu {
                 break;
                 
             case 6:
-                //Funcao listar alunos inativos
-                System.out.println("Opção selecionada : Listar alunos inativos.");
-                inativo.listaInativo();
+                //Funcao listar ListaAtivos inativos
+                System.out.println("Opção selecionada : Listar ListaAlunos inativos.");
+                
+                try{
+                    ListaInativos = arquivoInativo.listaInativo();
+                }catch(NaoExisteException ex){
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                }
+                for (int i = 0; i < ListaInativos.size(); i++) {
+                    AlunoInativo=ListaInativos.get(i);
+                    System.out.println("-------------Aluno Nº "+i+"-------------");
+                    System.out.println("Nome: "+AlunoInativo.getNome());
+                    System.out.println("Endereço: "+AlunoInativo.getEndereco());
+                    System.out.println("RG: "+AlunoInativo.getRG());
+                    System.out.println("Telefone: "+AlunoInativo.getTelefone());
+                    System.out.println("Idade: "+AlunoInativo.descobreIdade(AlunoInativo.getData_nasc()));
+                }
+                ListaInativos = null;
                 
                 exibirSubMenus(1);
                 this.nivelMenu = 1;
@@ -259,7 +293,6 @@ public class Menu {
                 break;
             default:
                 break;
-        
         }
     }
     /**
@@ -267,6 +300,7 @@ public class Menu {
      * @param opcao a ser selecionada
      */
       public void treinoMenu(int opcao){
+        ArrayList<Treinos> treinos = new ArrayList();
         Treinos treino = new Treinos();
         int cod_treino;
         String descricao;
@@ -283,11 +317,7 @@ public class Menu {
                 treino.setCod_treino(cod_treino);
                 treino.setDescricao(descricao);
                 
-                try{
-                    arquivoTreino.adicionaTreino(treino);
-                }catch(CodigoException ex){
-                    System.err.println(ex.getMessage());
-                }
+                arquivoTreino.adicionaTreino(treino);
                 
                 exibirSubMenus(2);
                 this.nivelMenu = 1;
@@ -295,13 +325,23 @@ public class Menu {
             case 2:
                 //Funcao listar treino
                 System.out.println("Opção selecionada :  Listar treinos.");
-                arquivoTreino.listaTreinos();
+                
+                try{
+                    treinos = arquivoTreino.listaTreinos();
+                }catch(NaoExisteException ex){
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                }
+                for (int i = 0; i < treinos.size(); i++) {
+                    treino=treinos.get(i);
+                    System.out.println("------------Treino Nº "+i+"-------------");
+                    System.out.println("Descrição: "+treino.getDescricao());
+                }
                 
                 exibirSubMenus(2);
                 this.nivelMenu = 1;
                 break;
             case 3://Não implementado ainda
-                //Funcao vincular a um aluno
+                //Funcao vincular a um AlunoAtivo
                 System.out.println("Opção selecionada : Vincular treino a um aluno.");
                 exibirSubMenus(2);
                 this.nivelMenu = 1;
@@ -314,10 +354,10 @@ public class Menu {
                 
                 try{
                     treino=arquivoTreino.buscaTreinoCodigo(cod_treino);
-                    System.out.println("-------------Treino Nº "+treino.getCod_treino()+"-------------");
+                    System.out.println("------------Treino Nº "+cod_treino+"-------------");
                     System.out.println("Descrição: "+treino.getDescricao());
                 }catch(NaoExisteException ex){
-                    System.err.println(ex.getMessage());
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
                 
                 exibirSubMenus(2);
@@ -341,6 +381,10 @@ public class Menu {
         int cod_aluno;
         int dias;
         float valor;
+        int codigo;
+        ArrayList<Mensalidade> mensalidades = new ArrayList();
+        Mensalidade mensalidade;
+        Ativo AlunoAtivo = new Ativo();
         switch (opcao) {
             case 1:
                  //Funcao inserir mensalidade
@@ -353,13 +397,9 @@ public class Menu {
                 System.out.print("Digite a quantidade de dias que será paga : ");
                 dias = entrada.nextInt();
                 
-                Mensalidade mensalidade = new Mensalidade(valor,cod_aluno,dias);
+                mensalidade = new Mensalidade(valor,cod_aluno,dias);
                 
-                try{
-                    arquivoMensalidade.adicionaMensalidade(mensalidade);
-                }catch(CodigoException ex){
-                    System.err.println(ex.getMessage());
-                }
+                arquivoMensalidade.adicionaMensalidade(mensalidade);
                 
                 exibirSubMenus(3);
                 this.nivelMenu = 1;
@@ -367,24 +407,51 @@ public class Menu {
             case 2:
                 //Funcao listar mensalidades
                 System.out.println("Opção selecionada : Listar mensalidades.");
-                arquivoMensalidade.listaMensalidades();
+                try{
+                    mensalidades = arquivoMensalidade.listaMensalidades();
+                }catch(NaoExisteException ex){
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                }
+                for (int i = 0; i < mensalidades.size(); i++) {
+                    mensalidade=mensalidades.get(i);
+                    System.out.println("------------Mensalidade Nº "+i+"-------------");
+                    System.out.println("Data de Pagamento: "+mensalidade.getData_pagamento());
+                    System.out.println("Valor: "+mensalidade.getValor());
+                    System.out.println("Data que expira: "+mensalidade.getData_fim());
+                    try {
+                        AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(mensalidade.getCod_aluno());
+                        System.out.println("Código do aluno:"+mensalidade.getCod_aluno());
+                        System.out.println("Nome: "+AlunoAtivo.getNome());
+                    }catch(NaoExisteException ex){
+                       log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    }
+                }
                 exibirSubMenus(3);
                 this.nivelMenu = 1;
                 break;
             case 3:
                 //Funcao buscar mensalidade por código
                 System.out.println("Opção selecionada : Buscar mensalidade por código.");
-                System.out.print("Digite o código do aluno : ");
-                cod_aluno = entrada.nextInt();
+                System.out.print("Digite o código da mensalidade : ");
+                codigo = entrada.nextInt();
                 
                 try{
-                mensalidade=arquivoMensalidade.buscaMensalidadeCodigo(cod_aluno);
-                System.out.println("-------------Aluno Nº "+mensalidade.getCod_aluno()+"-------------");
-                System.out.println("Valor: "+mensalidade.getValor());
-                System.out.println("Data de Pagamento (Data que a operação foi feita no sistema): "+mensalidade.getData_pagamento());
-                System.out.println("Dura até o dia: "+mensalidade.getData_fim());
+                    mensalidade=arquivoMensalidade.buscaMensalidadeCodigo(codigo);
+                    System.out.println("------------Mensalidade Nº "+codigo+"-------------");
+                    System.out.println("Data de Pagamento: "+mensalidade.getData_pagamento());
+                    System.out.println("Valor: "+mensalidade.getValor());
+                    System.out.println("Data que expira: "+mensalidade.getData_fim());
+                    try {
+                        AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(mensalidade.getCod_aluno());
+                        System.out.println("Código do aluno:"+mensalidade.getCod_aluno());
+                        System.out.println("Nome: "+AlunoAtivo.getNome());
+                        System.out.println("RG: "+AlunoAtivo.getRG());
+                        System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    }catch(NaoExisteException ex){
+                       log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    }
                 }catch(NaoExisteException ex){
-                    System.err.println(ex.getMessage());
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
                 
                 exibirSubMenus(3);
@@ -405,16 +472,19 @@ public class Menu {
         * @param opcao a ser selecionada
         */
         public void catracaMenu(int opcao){
-            int cod_aluno;
+            int codigo;
             Catraca catraca;
+            ArrayList<Catraca> entradas = new ArrayList();
+            Ativo AlunoAtivo = new Ativo();
             switch (opcao) {
             case 1:
                  //Funcao inserir catraca
-                System.out.println("Opção selecionada : Inserir catraca.");
+                System.out.println("Opção selecionada : Inserir entrada.");
                 System.out.print("Digite o código do aluno : ");
-                cod_aluno = entrada.nextInt();
+                codigo = entrada.nextInt();
                 catraca = new Catraca(LocalDate.now());
-                catraca.setCod_aluno(cod_aluno);
+                catraca.setCod_aluno(codigo);
+   
                 arquivoCatraca.adicionaEntrada(catraca);
                 
                 exibirSubMenus(4);
@@ -422,24 +492,55 @@ public class Menu {
                 break;
             case 2:
                 //Funcao listar catracas
-                System.out.println("Opção selecionada : Listar catraca.");
-                arquivoCatraca.listaEntradas();
+                System.out.println("Opção selecionada : Listar entradas.");
+                
+                try{
+                    entradas = arquivoCatraca.listaEntradas();
+                }catch(NaoExisteException ex){
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
+                }
+                for (int i = 0; i < entradas.size(); i++) {
+                    catraca=entradas.get(i);
+                    System.out.println("------------Entrada Nº "+i+"-------------");
+                    System.out.println("Data de Entrada: "+catraca.getData_entrada());
+                    try {
+                    AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(catraca.getCod_aluno());
+                        System.out.println("Código do aluno:"+catraca.getCod_aluno());
+                        System.out.println("Nome: "+AlunoAtivo.getNome());
+                        System.out.println("RG: "+AlunoAtivo.getRG());
+                        System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    }catch(NaoExisteException ex){
+                       log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    }
+                }
+                entradas = null;
                 
                 exibirSubMenus(4);
                 this.nivelMenu = 1;
                 break;
             case 3:
-                //Funcao buscar por código de aluno
-                System.out.println("Opção selecionada : Buscar catraca por código de aluno.");
-                System.out.print("Digite o código do aluno : ");
-                cod_aluno = entrada.nextInt();
+                //Funcao buscar por código de AlunoAtivo
+                System.out.println("Opção selecionada : Buscar entrada por código.");
+                System.out.print("Digite o código: ");
+                codigo = entrada.nextInt();
+                
                 try{
-                    catraca=arquivoCatraca.buscaEntradaCodigo(cod_aluno);
-                    System.out.println("-------------Aluno Nº "+catraca.getCod_aluno()+"-------------");
+                    catraca=arquivoCatraca.buscaEntradaCodigo(codigo);
+                    System.out.println("-------------Entrada Nº "+codigo+"-------------");
                     System.out.println("Horário de Entrada55: "+catraca.getData_entrada());
+                    try {
+                        AlunoAtivo=arquivoAtivo.buscaAtivoCodigo(catraca.getCod_aluno());
+                        System.out.println("Código do aluno:"+catraca.getCod_aluno());
+                        System.out.println("Nome: "+AlunoAtivo.getNome());
+                        System.out.println("RG: "+AlunoAtivo.getRG());
+                        System.out.println("Telefone: "+AlunoAtivo.getTelefone());
+                    }catch(NaoExisteException ex){
+                       log.getLogger().log(Level.SEVERE, ex.getMessage());
+                    }
                 }catch(NaoExisteException ex){
-                    System.err.println(ex.getMessage());
+                    log.getLogger().log(Level.SEVERE, ex.getMessage());
                 }
+                entradas=null;
                     
                 exibirSubMenus(4);
                 this.nivelMenu = 1;

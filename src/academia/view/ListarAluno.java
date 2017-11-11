@@ -6,6 +6,10 @@
 package academia.view;
 import javax.swing.JTextArea;
 import javax.swing.JDialog;
+import academia.arquivo.AtivoArquivo;
+import academia.bean.Ativo;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -370,10 +374,15 @@ public void myInitComponents() {
         
     }//GEN-LAST:event_buscaBotaoActionPerformed
     private void listarTodos(){
+        /*
+        ArrayList<Ativo> listas = new ArrayList();
+        AtivoArquivo arquivo = new AtivoArquivo();
+        listas=arquivo.listaAtivo();
+        */
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
         String dados = "Listar todos os alunos aqui";
-        JTextArea areaDados = new JTextArea(dados);
+        JTextArea areaDados = new JTextArea(dados);   
         areaDados.setEditable(false);
         resultado.add(areaDados);
         resultado.setSize(500,500);

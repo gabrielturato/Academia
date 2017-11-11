@@ -6,17 +6,9 @@
 package academia.arquivo;
 
 import academia.bean.Ativo;
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import static java.lang.Integer.parseInt;
-import static java.time.LocalDate.parse;
-import academia.exceptions.CodigoException;
-import academia.exceptions.NaoExisteException;
+//import academia.bean.Inativo;
+import academia.exceptions.*;
+import academia.lista.ListaAluno;
 
 /**
  * Classe responsável por fazer operações com
@@ -24,172 +16,107 @@ import academia.exceptions.NaoExisteException;
  * 
  * @author Turato
  */
+import java.util.ArrayList;
+
 public class AtivoArquivo {
+    private final Operacoes operar = new Operacoes();
+    private final ListaAluno ListaAluno = new ListaAluno();
+    private ArrayList<Ativo> ativos = new ArrayList();
+    private Ativo aluno = new Ativo();
+    private final Log log = new Log();
+
     /**
-     * Busca o aluno ativo no documento alunos_ativos.txt
-     * através de seu código identificador
+     * Adiciona ativos ativos ao documento alunos_ativos.txt
+     * 
+     * @param a classe Ativo
+     * 
+     * @throws ExisteException caso o objeto
+     * de aluno já exista no ArrayList, não 
+     * permite cadastrar novamente
+     */
+     public void adicionaAtivo(Ativo a) throws ExisteException{
+        ativos=operar.lerListaAtivo("alunos_ativos.txt");
+        if(ativos==null){
+            ListaAluno.adicionaAtivo(a);
+            ativos=ListaAluno.getListaAtivos();
+            boolean sucesso=operar.salvarListaAtivo("alunos_ativos.txt", ativos);
+            if(sucesso==true){
+                System.out.println("Aluno inserido com sucesso !");
+            }else{
+                System.out.println("Não foi possível inserir o aluno !");
+            } 
+        }else{
+            if(ativos.contains(a)){
+                throw new ExisteException("Já existe esse aluno registrado");
+            }else{
+                ListaAluno.setListaAtivos(ativos);
+                ListaAluno.adicionaAtivo(a);
+                ativos=ListaAluno.getListaAtivos();
+                boolean sucesso=operar.salvarListaAtivo("alunos_ativos.txt", ativos);
+                if(sucesso==true){
+                    System.out.println("Aluno inserido com sucesso !");
+                }else{
+                    System.out.println("Não foi possível inserir o aluno !");
+                }   
+                }
+        } 
+     }
+     /**
+     * Lista todos os alunos ativos
+     * existentes no arquivo alunos_ativos.txt
+     * @return ArrayList de ativos
+     * @throws academia.exceptions.NaoExisteException caso não exista nenhum
+     * aluno registrado ainda.
+      */
+     public ArrayList<Ativo> listaAtivo() throws NaoExisteException{
+        ativos = operar.lerListaAtivo("alunos_ativos.txt");
+        if(ativos==null){
+           throw new NaoExisteException("Não tem nenhum aluno registrado");
+        }else{
+           return ativos;
+        }
+     }
+     /**
+     * Busca o aluno ListaAluno no documento alunos_ativos.txt
+ através de seu código identificador
      * 
      * @param cod_aluno
      * 
      * @return classe Ativo
      * 
-     * @throws NaoExisteException caso não exista esse registro no arquivo
+     * @throws NaoExisteException caso não exista o registro no arquivo
      */
     public Ativo buscaAtivoCodigo(int cod_aluno) throws NaoExisteException{
-        FileReader arquivo = null;
-        BufferedReader br = null;
         try{
-            arquivo = new FileReader("alunos_ativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(parseInt(palavras[0])==cod_aluno){
-                        Ativo a = new Ativo();
-                        a.setCod_aluno(parseInt(palavras[0]));
-                        a.setNome(palavras[1]);
-                        a.setEndereco(palavras[2]);
-                        a.setRG(palavras[3]);
-                        a.setTelefone(palavras[4]);
-                        a.setData_nasc(parse(palavras[5]));
-                        return a;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+            ativos = operar.lerListaAtivo("alunos_ativos.txt");
+            ListaAluno.setListaAtivos(ativos);
+            aluno=ListaAluno.buscaAtivo(cod_aluno);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhum aluno registrado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno com esse código");
         }
-        throw new NaoExisteException("O aluno de Nº "+cod_aluno+" não está registrado");
-     }
-    /**
-     * Adiciona alunos ativos ao documento alunos_ativos.txt
-     * 
-     * @param a classe Ativo
-     * 
-     * @throws CodigoException caso o código
-     * de aluno já exista, não permite cadastrar
-     * novamente
-     */
-     public void adicionaAtivo(Ativo a) throws CodigoException{
-        try{
-            buscaAtivoCodigo(a.getCod_aluno());
-            }catch(NaoExisteException ex){    
-                try{
-                    FileWriter arquivo = new FileWriter("alunos_ativos.txt",true);
-                    BufferedWriter escrever = new BufferedWriter(arquivo);
-                
-                    String linha = a.getCod_aluno()+";"+a.getNome()+";"+a.getEndereco()+";"+a.getRG()+";"+a.getTelefone()+";"+a.getData_nasc().toString()+"\n";
-                    escrever.write(linha);
-                
-                    escrever.close();
-                    arquivo.close();
-                }catch(IOException  e){
-                    System.err.println("Erro ao escrever o arquivo");
-                }
-                System.out.println("Aluno "+a.getNome()+" adicionado com sucesso");
-            }
-            throw new CodigoException("Erro ao tentar inserir o aluno Nº "+a.getCod_aluno()+" pois já existe");
+        return aluno;
     }
-     /**
-      * Lista todos os alunos ativos
-      * existentes no arquivo alunos_ativos.txt
-      */
-     public void listaAtivo(){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("alunos_ativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    System.out.println("-------------Aluno Nº "+palavras[0]+"-------------");
-                    System.out.println("Nome: "+palavras[1]);
-                    System.out.println("Endereço: "+palavras[2]);
-                    System.out.println("RG: "+palavras[3]);
-                    System.out.println("Telefone: "+palavras[4]);
-                    System.out.println("Data de Nascimento: "+palavras[5]);
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-                File file = new File("alunos_ativos.txt");
-                System.err.println("Arquivo criado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
-        }
-     }
     /**
-     * Busca um aluno ativo por nome 
-     * no arquivo alunos_ativos.txt
+     * Busca um aluno ListaAluno por nome 
+    no arquivo alunos_ativos.txt
      * @param nome
      * @return 
+     * @throws NaoExisteException caso não exista um aluno com esse nome
      */
-    public Ativo buscaAtivoNome(String nome) throws NaoExisteException{
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("alunos_ativos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(palavras[1].equals(nome)){
-                        Ativo a = new Ativo();
-                        a.setCod_aluno(parseInt(palavras[0]));
-                        a.setNome(palavras[1]);
-                        a.setEndereco(palavras[2]);
-                        a.setRG(palavras[3]);
-                        a.setTelefone(palavras[4]);
-                        a.setData_nasc(parse(palavras[5]));
-                        return a;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+   public Ativo buscaAtivoNome(String nome) throws NaoExisteException{
+       try{
+            ativos = operar.lerListaAtivo("alunos_ativos.txt");
+            ListaAluno.setListaAtivos(ativos);
+            aluno=ListaAluno.buscaAtivo(nome);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhum aluno registrado");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe um aluno com esse nome");
         }
-        throw new NaoExisteException("O aluno chamado "+nome+" não está registrado");     
-     }
+        return aluno;
+   }
+   
+   //DELETAR ATIVO
 }

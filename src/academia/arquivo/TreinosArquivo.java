@@ -5,128 +5,68 @@
  */
 package academia.arquivo;
 
-import academia.bean.Inativo;
 import academia.bean.Treinos;
-import academia.exceptions.CodigoException;
+import academia.exceptions.Log;
 import academia.exceptions.NaoExisteException;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import static java.lang.Integer.parseInt;
-import static java.time.LocalDate.parse;
+import academia.lista.ListaTreinos;
+import java.util.ArrayList;
 
 /**
  * Responsável por operações no arquivo treinos.txt
  * @author Turato
  */
 public class TreinosArquivo {
+    private final Operacoes operar = new Operacoes();
+    private final ListaTreinos ListaTreinos = new ListaTreinos();
+    private ArrayList<Treinos> treinos = new ArrayList();
+    private Treinos treino;
+    private final Log log = new Log();
     /**
      * Adiciona um novo treino ao arquivo treinos.txt
      * @param t, classe Treinos a ser inserida
-     * @throws CodigoException caso o código a ser inserido já exista
      */
-    public void adicionaTreino(Treinos t) throws CodigoException{
-        try{
-            buscaTreinoCodigo(t.getCod_treino());
-        }catch(NaoExisteException ex){
-            try{
-                FileWriter arquivo = new FileWriter("treinos.txt",true);
-                BufferedWriter escrever = new BufferedWriter(arquivo);
-            
-                String linha = t.getCod_treino()+";"+t.getDescricao();
-                escrever.write(linha);
-            
-                escrever.close();
-                arquivo.close();
-            }catch(IOException  e){
-                System.out.println("Erro ao escrever o arquivo");
-            }
+    public void adicionaTreino(Treinos t){
+        treinos=operar.lerListaTreino("treinos.txt");
+        ListaTreinos.setTreinos(treinos);
+        ListaTreinos.adicionaTreino(t);
+        treinos=ListaTreinos.getTreinos();
+        boolean sucesso=operar.salvarListaTreino("treinos.txt", treinos);
+        if(sucesso==true){
+            System.out.println("Treino inserido com sucesso !");
+        }else{
+            System.out.println("Não foi possível inserir o treino !");
         }
-        throw new CodigoException("O treino de código "+t.getCod_treino()+" já está registrado");
     }
     /**
      * Lista todos os treinos registrados no
      * arquivo treinos.txt
+     * @throws NaoExisteException caso não exista nenhum registro
      */
-    public void listaTreinos(){
-        FileReader arquivo = null;
-        BufferedReader br = null;
-        try{
-            arquivo = new FileReader("treinos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    System.out.println("-------------Treino Nº "+palavras[0]+"-------------");
-                    System.out.println("Descrição: "+palavras[1]);
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-                File file = new File("treinos.txt");
-                System.err.println("Arquivo criado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+    public ArrayList<Treinos> listaTreinos() throws NaoExisteException{
+        treinos = operar.lerListaTreino("treinos.txt");
+        if(treinos==null){
+           throw new NaoExisteException("Não tem nenhuma entrada registrado");
+        }else{
+           return treinos;
         }
      }
     /**
      * Busca o treino pelo seu respectivo código
      * no arquivo treinos.txt
      * @param cod_treino código do treino a ser buscado
-     * @return Treinos, classe para futuras operações
+     * @return Treino, classe para futuras operações
      * @throws NaoExisteException caso o registro não exista
      */
     public Treinos buscaTreinoCodigo(int cod_treino) throws NaoExisteException{
-        FileReader arquivo = null;
-        BufferedReader br = null;
         try{
-            arquivo = new FileReader("treinos.txt"); 
-            br = new BufferedReader(arquivo);
-            String linha;
-            do{
-                linha=null;
-                try{
-                linha = br.readLine();
-                }catch(IOException e){
-                    System.out.println("Erro a ler a linha");
-                }
-                if(linha!=null){
-                    String[] palavras = linha.split(";"); 
-                    if(parseInt(palavras[0])==cod_treino){
-                        Treinos t = new Treinos();
-                        t.setCod_treino(parseInt(palavras[0]));
-                        t.setDescricao(palavras[1]);
-                        return t;
-                    }
-                }
-            }while(linha!=null);
-        }catch(FileNotFoundException e){
-                System.err.println("Arquivo não encontrado");
-        }finally{
-            try{
-                br.close();
-                arquivo.close(); 
-            }catch(IOException e){
-                System.err.println("Erro ao fechar o arquivo");
-            }
+            treinos = operar.lerListaTreino("treinos.txt");
+            ListaTreinos.setTreinos(treinos);
+            treino=ListaTreinos.buscaTreino(cod_treino);
+        }catch(NullPointerException ex){
+            throw new NaoExisteException("Não tem nenhuma entrada registrada");
+        }catch(IndexOutOfBoundsException ex){
+            throw new NaoExisteException("Não existe uma entrada com esse código");
         }
-        throw new NaoExisteException("O treino de código "+cod_treino+" não existe no arquivo");     
+        return treino;     
      }
 }

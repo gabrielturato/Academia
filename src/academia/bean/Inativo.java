@@ -19,17 +19,7 @@ public class Inativo extends Aluno{
     public Inativo() {
         super();
     }
-    
-    @Override
-    public int getCod_aluno(){
-        return this.cod_aluno;
-    }
-    
-    @Override 
-    public void setCod_aluno(int cod_aluno){
-        this.cod_aluno = cod_aluno;
-    }
- 
+
     @Override
     public LocalDate getData_nasc() {
         return data_nasc;
