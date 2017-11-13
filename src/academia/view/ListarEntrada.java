@@ -9,14 +9,15 @@ import academia.arquivo.AtivoArquivo;
 import academia.arquivo.CatracaArquivo;
 import academia.bean.Ativo;
 import academia.bean.Catraca;
-import academia.bean.Mensalidade;
 import academia.exceptions.Log;
 import academia.exceptions.NaoExisteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -394,7 +395,7 @@ public void myInitComponents() {
                     String dados = " Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
                     TodosDados.append(dados);
                 }else{
-                    String dados = "\n\n Entrada Nº "+i+" Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
+                    String dados = "\n\n Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Nome do aluno: "+aluno.getNome()+"\n Telefone: "+aluno.getTelefone();
                     TodosDados.append(dados);
                 }
             }catch(NaoExisteException ex){
@@ -404,7 +405,7 @@ public void myInitComponents() {
                     String dados = " Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
                     TodosDados.append(dados);
                 }else{
-                    String dados = "\n\n Entrada Nº "+i+" Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
+                    String dados = "\n\n Entrada Nº "+i+"\n Data: "+entrada.getData_entrada()+"\n Dados do aluno não foram encontrados.";
                     TodosDados.append(dados);
                 }
             }
@@ -412,7 +413,12 @@ public void myInitComponents() {
         }
         JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
-        resultado.add(areaDados);
+        JScrollPane scroll = new JScrollPane(areaDados);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        resultado.add(scroll);
+    
+        
         resultado.setSize(500,500);
         resultado.setVisible(true);
     

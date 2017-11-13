@@ -15,7 +15,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -198,7 +200,12 @@ public class ListarMensalidade extends javax.swing.JFrame {
         }
         JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
-        resultado.add(areaDados);
+        JScrollPane scroll = new JScrollPane(areaDados);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        resultado.add(scroll);
+    
+        
         resultado.setSize(500,500);
         resultado.setVisible(true);
     

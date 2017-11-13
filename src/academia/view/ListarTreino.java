@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -391,18 +393,23 @@ public void myInitComponents() {
         StringBuilder TodosDados = new StringBuilder();
         Treinos treino;
         for (int i = 0; i < treinos.size(); i++) {
-        treino = treinos.get(i);
-        if(i==0){
-            String dados = " Treino Nº "+i+"\n\n "+treino.getDescricao();
-            TodosDados.append(dados);
-        }else{
-            String dados = "\n\n Treino Nº"+i+"\n\n "+treino.getDescricao();
-            TodosDados.append(dados);
-        }
+            treino = treinos.get(i);
+            if(i==0){
+                String dados = " Treino Nº "+i+"\n\n "+treino.getDescricao();
+                TodosDados.append(dados);
+            }else{
+                String dados = "\n\n Treino Nº"+i+"\n\n "+treino.getDescricao();
+                TodosDados.append(dados);
+            }
         }
         JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
-        resultado.add(areaDados);
+        JScrollPane scroll = new JScrollPane(areaDados);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        resultado.add(scroll);
+    
+        
         resultado.setSize(500,500);
         resultado.setVisible(true);
     

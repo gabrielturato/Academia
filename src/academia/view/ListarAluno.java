@@ -15,6 +15,8 @@ import academia.exceptions.NaoExisteException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 /**
  *
@@ -405,11 +407,6 @@ public void myInitComponents() {
         
     }//GEN-LAST:event_buscaBotaoActionPerformed
     private void listarTodos(ArrayList<Ativo> alunos,ArrayList<Inativo> inativos){
-        /*
-        ArrayList<Ativo> listas = new ArrayList();
-        AtivoArquivo arquivo = new AtivoArquivo();
-        listas=arquivo.listaAtivo();
-        */
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
         StringBuilder TodosDados = new StringBuilder();
@@ -424,8 +421,10 @@ public void myInitComponents() {
                 String dados = "\n\n Aluno Nº"+i+"\n Nome: "+AlunoAtivo.getNome()+"\n Endereço: "+AlunoAtivo.getEndereco()+"\n RG: "+AlunoAtivo.getRG()+"\n Telefone: "+AlunoAtivo.getTelefone()+"\n Idade: "+AlunoAtivo.descobreIdade(AlunoAtivo.getData_nasc())+"\n";
                 TodosDados.append(dados);
             }
-            AlunoInativo = inativos.get(i);
-            if(i==0){
+        }
+        for (int j = 0; j < inativos.size(); j++) {
+            AlunoInativo = inativos.get(j);
+            if(j==0){
                 String dados = "------------------------Alunos Invalidados----------------------------"+"\n Nome: "+AlunoInativo.getNome()+"\n Endereço: "+AlunoInativo.getEndereco()+"\n RG: "+AlunoInativo.getRG()+"\n Telefone: "+AlunoInativo.getTelefone()+"\n Idade: "+AlunoInativo.descobreIdade(AlunoInativo.getData_nasc());
                 TodosDados.append(dados);
             }else{
@@ -433,9 +432,14 @@ public void myInitComponents() {
                 TodosDados.append(dados);
             }
         }
-        JTextArea areaDados = new JTextArea(TodosDados.toString());   
+        JTextArea areaDados = new JTextArea(TodosDados.toString());
         areaDados.setEditable(false);
-        resultado.add(areaDados);
+        JScrollPane scroll = new JScrollPane(areaDados);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        resultado.add(scroll);
+    
+        
         resultado.setSize(500,500);
         resultado.setVisible(true);
     
