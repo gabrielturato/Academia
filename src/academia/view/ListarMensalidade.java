@@ -233,10 +233,9 @@ public class ListarMensalidade extends javax.swing.JFrame {
             codMensalidade.setText("");
         }
     }
-    /**
-     * @param args the command line arguments
-     */
-        
+ /**
+  * Inicia os componentes do Jframe
+  */ 
 public void myInitComponents() {
     
         jPanel1 = new javax.swing.JPanel();

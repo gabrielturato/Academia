@@ -31,7 +31,9 @@ public class ListarTreino extends javax.swing.JFrame {
         initComponents();
     myInitComponents();
     }
-
+/**
+ * Inicia os componentes do jFrame
+ */
 public void myInitComponents() {
     
         jPanel1 = new javax.swing.JPanel();

@@ -406,6 +406,12 @@ public void myInitComponents() {
         }
         
     }//GEN-LAST:event_buscaBotaoActionPerformed
+    /**
+     * Função responsável por buscar todos os alunos e listar em um
+     * jTextField
+     * @param alunos ativos a serem litados
+     * @param inativos a serem listados
+     */
     private void listarTodos(ArrayList<Ativo> alunos,ArrayList<Inativo> inativos){
         JDialog resultado = new JDialog();
         resultado.setTitle("Listar todos");
@@ -444,6 +450,10 @@ public void myInitComponents() {
         resultado.setVisible(true);
     
     }
+    /**
+     * Função responsável pela busca do aluno no arquivo
+     * @param AlunoAtivo a ser buscado no arquivo
+     */
     private void buscaAluno(Ativo AlunoAtivo){
         JDialog resultado = new JDialog();
         resultado.setTitle("Busca aluno");
